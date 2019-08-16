@@ -6,7 +6,10 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:orientation="vertical"
-    android:padding="10dp"
+    android:paddingEnd="10dp"
+    android:paddingStart="10dp"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
     app:cardCornerRadius="8dp">
 
     <RelativeLayout
@@ -15,9 +18,9 @@
 
         <ImageView
             android:id="@+id/img_poster"
+            android:contentDescription="@string/image_poster"
             android:layout_width="100dp"
             android:layout_height="150dp"
-            android:contentDescription="@string/image_poster"
             android:scaleType="fitXY" />
 
         <TextView
@@ -40,11 +43,11 @@
             android:layout_marginStart="26dp"
             android:layout_marginLeft="26dp"
             android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/img_poster"
             android:layout_toRightOf="@id/img_poster"
             android:ellipsize="end"
             android:maxLines="3"
-            android:text="@string/lorem" />
+            android:text="@string/lorem"
+            android:layout_toEndOf="@id/img_poster" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

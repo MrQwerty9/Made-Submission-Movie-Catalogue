@@ -16,7 +16,7 @@ class DetailActivity : AppCompatActivity() {
 
         val movie = intent.getParcelableExtra<Movie>(EXTRA_DETAIL)
         txt_title.text = movie.title
-        txt_overview.text = movie.overvie
+        txt_overview.text = movie.overview
         img_poster.setImageResource(movie.poster)
 
     }

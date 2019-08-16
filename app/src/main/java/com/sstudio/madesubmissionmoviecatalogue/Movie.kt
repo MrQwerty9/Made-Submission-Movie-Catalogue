@@ -6,6 +6,6 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 class Movie (
     var title: String,
-    var overvie: String,
+    var overview: String,
     var poster: Int
 ):Parcelable

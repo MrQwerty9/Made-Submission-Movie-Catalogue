@@ -1,42 +1,46 @@
 package com.sstudio.madesubmissionmoviecatalogue
 
-import android.content.res.TypedArray
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_main.*
+import android.content.Intent
+import android.provider.Settings
+import android.view.Menu
+import android.view.MenuItem
+import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var dataTitle: Array<String>
-    private lateinit var dataOverview: Array<String>
-    private lateinit var dataPoster: TypedArray
-    private lateinit var adapter: MovieAdapter
-    private lateinit var movies: ArrayList<Movie>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        adapter = MovieAdapter(this)
-        lv_list.adapter = adapter
-
-        prepare()
-        addItem()
+        init()
     }
 
-    private fun addItem() {
-        movies = ArrayList()
+    private fun init() {
+        setupViewPager(pager_container)
+        tab_layout.setupWithViewPager(pager_container)
+    }
 
-        for (i in 0 until dataTitle.size) {
-            val movie = Movie(dataTitle[i], dataOverview[i], dataPoster.getResourceId(i, -1))
-            movies.add(movie)
+    private fun setupViewPager(viewPager: ViewPager) {
+        val adapter = FragmentAdapter(supportFragmentManager, this)
+        viewPager.offscreenPageLimit = FragmentAdapter.PAGE_COUNT
+        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_layout))
+        viewPager.adapter = adapter
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_change_settings) {
+            val mIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
+            startActivity(mIntent)
         }
-        adapter.movies = movies
-    }
-
-    private fun prepare() {
-        dataTitle = resources.getStringArray(R.array.data_title)
-        dataOverview = resources.getStringArray(R.array.data_overview)
-        dataPoster = resources.obtainTypedArray(R.array.data_poster)
+        return super.onOptionsItemSelected(item)
     }
 }
