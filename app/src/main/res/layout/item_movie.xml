@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_item_movie"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -18,7 +19,7 @@
 
         <ImageView
             android:id="@+id/img_poster"
-            android:contentDescription="@string/image_poster"
+            android:contentDescription="@string/txt_image_poster"
             android:layout_width="100dp"
             android:layout_height="150dp"
             android:scaleType="fitXY" />
@@ -36,10 +37,23 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/txt_release_date"
+            android:layout_below="@id/txt_title"
+            android:layout_toRightOf="@id/img_poster"
+            android:text="@string/txt_release_date"
+            android:layout_marginStart="26dp"
+            android:layout_marginLeft="26dp"
+            android:layout_width="wrap_content"
+            android:textSize="10sp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/img_poster"
+            tools:ignore="SmallSp" />
+
+        <TextView
             android:id="@+id/txt_overview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txt_title"
+            android:layout_below="@id/txt_release_date"
             android:layout_marginStart="26dp"
             android:layout_marginLeft="26dp"
             android:layout_marginTop="10dp"

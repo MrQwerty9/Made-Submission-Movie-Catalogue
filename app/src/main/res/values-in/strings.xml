@@ -5,113 +5,14 @@
     <string name="change_language_settings">Ubah Pengaturan Bahasa</string>
     <string name="tab_1">Film</string>
     <string name="tab_2">Acara Tv</string>
-    <string name="image_poster">image poster</string>
-
-    <string-array name="data_title_movie">
-        <item>Venom</item>
-        <item>Spider-Man: Into the Spider-Verse</item>
-        <item>How to Train Your Dragon: The Hidden World</item>
-        <item>Aquaman</item>
-        <item>Avengers: Infinity War</item>
-        <item>Bumblebee</item>
-        <item>Creed II</item>
-        <item>Once Upon a Deadpool</item>
-        <item>Glass</item>
-        <item>Preman Pensiun</item>
-    </string-array>
-
-    <string-array name="data_overview_movie">
-        <item>Jurnalis investigasi Eddie Brock berusaha untuk kembali setelah skandal, tetapi tidak sengaja menjadi
-             Tuan rumah Venom, seorang simbiot alien yang sangat kuat dan sakti. Segera, ia harus bergantung pada kekuatan yang baru ditemukannya
-             melindungi dunia dari organisasi bayangan mencari simbiosis mereka sendiri.
-        </item>
-        <item>Miles Morales menyulap hidupnya antara menjadi siswa sekolah menengah dan menjadi manusia laba-laba. Ketika Wilson
-             "Kingpin" Fisk menggunakan collider super, yang lain dari seberang Spider-Verse diangkut ke dimensi ini.
-        </item>
-        <item>Saat Hiccup memenuhi mimpinya untuk menciptakan utopia naga yang damai, penemuan Toothless yang liar,
-             pasangan yang sulit ditangkap menarik Night Fury. Ketika bahaya meningkat di rumah dan pemerintahan Hiccup sebagai kepala desa
-             diuji, baik naga dan pengendara harus membuat keputusan yang mustahil untuk menyelamatkan jenis mereka.
-        </item>
-        <item>Setelah rumah bagi peradaban paling maju di Bumi, Atlantis sekarang merupakan kerajaan bawah laut yang diperintah oleh
-             Raja Orm yang haus kekuasaan. Dengan pasukan yang sangat besar, Orm berencana untuk menaklukkan orang-orang samudera yang tersisa
-             dan kemudian dunia permukaan. Yang menghalangi jalannya adalah Arthur Curry, saudara setengah manusia Orm, setengah saudara Atlantis
-             dan pewaris sejati takhta.
-        </item>
-        <item>Ketika Avengers dan sekutu mereka terus melindungi dunia dari ancaman yang terlalu besar bagi siapa pun
-             Pahlawan yang harus ditangani, bahaya baru telah muncul dari bayang-bayang kosmik: Thanos. Seorang lalim keburukan intergalaksi,
-             tujuannya adalah untuk mengumpulkan semua enam Batu Infinity, artefak dari kekuatan yang tak terbayangkan, dan menggunakannya untuk menimbulkan
-             keinginan bengkok pada semua realitas. Segala yang Avengers telah perjuangkan telah mengarah ke saat ini - nasib
-             Bumi dan keberadaannya sendiri tidak pernah lebih pasti.
-        </item>
-        <item>Dalam pelarian pada tahun 1987, Bumblebee menemukan tempat perlindungan di tempat barang rongsokan di kota pantai kecil California.
-             Charlie, di puncak usia 18 dan mencoba menemukan tempatnya di dunia, menemukan Bumblebee,
-             pertempuran-bekas luka dan rusak. Ketika Charlie menghidupkannya, dia dengan cepat mengetahui bahwa ini bukan bug VW kuning biasa.
-        </item>
-        <item>Antara kewajiban pribadi dan pelatihan untuk pertarungan besar berikutnya melawan lawan dengan ikatannya
-             masa lalu keluarga, Adonis Creed menghadapi tantangan hidupnya.
-        </item>
-        <item>Fred Savage yang diculik dipaksa untuk menahan Deadpool PG-13 rendition Deadpool 2 sebagai kisah Putri Pengantin yang penuh keajaiban, heran nol F.
-        </item>
-        <item>Dalam serangkaian pertemuan yang meningkat, mantan penjaga keamanan David Dunn menggunakan kemampuan
-            supernaturalnya untuk melacak Kevin Wendell Crumb, seorang lelaki terganggu yang memiliki dua puluh empat kepribadian. Sementara itu, kehadiran bayangan Elia Price muncul sebagai seorang orkestra yang menyimpan rahasia penting bagi keduanya.
-        </item>
-        <item>Gobang kembali ke Bandung, mengundang teman-temannya, para mantan preman untuk bertemu kembali. Mereka
-            yang diundang adalah Ujang, Murad, Pipit, Cecep, Bohim, Mang Uu, Dikdik dan Joni. Dikdik kemudian tidak jadi
-            datang karena masalah dengan istrinya. Dalam pertemuan yang disebut “reuni kecil-kecilan” itu, Gobang meminta
-            bantuan teman-temannya untuk melakukan penyelidikan, siapa pelaku pembantaian terhadap adik iparnya hingga tewas.
-            Pelaku pembantaian kemudian diketahui adalah Darman dan kawan-kawan yang hanya sebagai orang suruhan. Dalang
-            di balik kejadian itu ternyata teman mereka sendiri, sesama bekas anak buah Muslihat (Epy Kusnandar) yang sebenarnya juga sudah pensiun. Muslihat mencoba mencegah terjadinya perang saudara, tapi Gobang sudah terlanjur datang dengan membawa dendam, “darah dibayar darah, nyawa dibayar nyawa</item>
-    </string-array>
-
-    <array name="data_poster_movie">
-        <item>@drawable/poster_venom</item>
-        <item>@drawable/poster_spiderman</item>
-        <item>@drawable/poster_dragon</item>
-        <item>@drawable/poster_aquaman</item>
-        <item>@drawable/poster_avengerinfinity</item>
-        <item>@drawable/poster_bumblebee</item>
-        <item>@drawable/poster_creed</item>
-        <item>@drawable/poster_deadpool</item>
-        <item>@drawable/poster_glass</item>
-        <item>@drawable/poster_preman</item>
-    </array>
-
-    <string-array name="data_title_tvshow">
-        <item>Arrow</item>
-        <item>The Flash</item>
-        <item>Doom Patrol</item>
-        <item>Game of Thrones</item>
-        <item>Gotham</item>
-        <item>NCIS</item>
-        <item>Riverdale</item>
-        <item>The Simpsons</item>
-        <item>The Umbrella Academy</item>
-        <item>The Walking Dead</item>
-    </string-array>
-
-    <string-array name="data_overview_tvshow">
-        <item>Playboy miliarder manja, Oliver Queen, hilang dan diduga tewas ketika kapal pesiarnya hilang di laut. Dia kembali lima tahun kemudian seorang pria yang berubah, bertekad untuk membersihkan kota sebagai main hakim sendiri bersenjatakan busur. </item>
-        <item> Setelah akselerator partikel menyebabkan badai hebat, Penyelidik CSI Barry Allen disambar petir dan jatuh koma. Beberapa bulan kemudian dia terbangun dengan kekuatan kecepatan super, memberinya kemampuan untuk bergerak melalui Central City seperti malaikat penjaga yang tak terlihat. Meskipun awalnya senang dengan kekuatan barunya, Barry terkejut menemukan bahwa dia bukan satu-satunya "manusia meta" yang diciptakan setelah ledakan akselerator - dan tidak semua orang menggunakan kekuatan baru mereka untuk kebaikan. Barry bermitra dengan S.T.A.R. Lab dan mendedikasikan hidupnya untuk melindungi yang tidak bersalah. Untuk saat ini, hanya beberapa teman dekat dan rekan yang tahu bahwa Barry secara harfiah adalah manusia tercepat, tetapi tidak lama sebelum dunia mengetahui apa yang menjadi Barry Allen. The Flash. </item>
-        <item> Anggota Patroli Doom masing-masing mengalami kecelakaan mengerikan yang memberi mereka kemampuan manusia super - tetapi juga membuat mereka terluka dan cacat. Trauma dan tertindas, tim menemukan tujuan melalui Ketua, yang menyatukan mereka untuk menyelidiki fenomena paling aneh yang ada - dan untuk melindungi Bumi dari apa yang mereka temukan. </item>
-        <item> Tujuh keluarga bangsawan berjuang untuk menguasai tanah mitos Westeros. Gesekan antara rumah-rumah mengarah ke perang skala penuh. Semua sementara kejahatan yang sangat kuno terbangun di utara terjauh. Di tengah-tengah perang, perintah militer yang diabaikan, Night\'s Watch, adalah yang berdiri di antara alam manusia dan kengerian es di luar sana. </item>
-        <item> Sebelum ada Batman, ada GOTHAM. Semua orang tahu nama Komisaris Gordon. Dia adalah salah satu musuh terbesar dunia kejahatan, seorang pria yang reputasinya identik dengan hukum dan ketertiban. Tapi apa yang diketahui tentang kisah Gordon dan kenaikannya dari detektif pemula ke Komisaris Polisi? Apa yang diperlukan untuk menavigasi berbagai lapisan korupsi yang diam-diam memerintah Kota Gotham, tempat bertelurnya penjahat paling ikonik di dunia? Dan keadaan apa yang menciptakan mereka - persona yang lebih besar dari kehidupan yang akan menjadi Catwoman, The Penguin, The Riddler, Two-Face dan The Joker? </item>
-        <item> Dari pembunuhan dan spionase hingga terorisme dan kapal selam curian, tim agen khusus menyelidiki kejahatan apa pun yang memiliki sedikit bukti yang terhubung dengan personel Korps Angkatan Laut dan Korps Marinir, terlepas dari pangkat atau jabatannya. </item>
-        <item> Berada di masa kini, seri ini menawarkan pandangan subversif yang berani tentang Archie, Betty, Veronica dan teman-teman mereka, menjelajahi kejernihan kehidupan kota kecil, kegelapan dan keanehan yang menggelegak di bawah fasad sehat Riverdale. </item>
-        <item> Bertempat di Springfield, kota rata-rata di Amerika, pertunjukan ini berfokus pada kejenakaan dan petualangan sehari-hari keluarga Simpson; Homer, Marge, Bart, Lisa dan Maggie, serta ribuan pemain virtual. Sejak awal, serial ini telah menjadi ikon budaya pop, menarik ratusan selebriti menjadi bintang tamu. Acara ini juga menjadi terkenal karena satirnya yang tak kenal takut terhadap kehidupan politik, media, dan Amerika secara umum. </item>
-        <item> Keluarga superhero yang disfungsional berkumpul untuk memecahkan misteri kematian ayah mereka, ancaman kiamat, dan banyak lagi. </item>
-        <item> Wakil Sheriff Rick Grimes terbangun dari koma untuk menemukan dunia pasca-apokaliptik yang didominasi oleh zombie pemakan daging. Dia berangkat untuk menemukan keluarganya dan bertemu dengan banyak penyintas lainnya di sepanjang jalan. </item>
-    </string-array>
-
-    <array name="data_poster_tvshow">
-        <item>@drawable/poster_arrow</item>
-        <item>@drawable/poster_flash</item>
-        <item>@drawable/poster_doom_patrol</item>
-        <item>@drawable/poster_god</item>
-        <item>@drawable/poster_gotham</item>
-        <item>@drawable/poster_ncis</item>
-        <item>@drawable/poster_riverdale</item>
-        <item>@drawable/poster_the_simpson</item>
-        <item>@drawable/poster_the_umbrella</item>
-        <item>@drawable/poster_the_walking_dead</item>
-    </array>
+    <string name="txt_image_poster">image poster</string>
+    <string name="txt_release_date">17 Agusus 2019</string>
+    <string name="language">id</string>
+    <public name="appbar_scrolling_view_behavior" type="string"/>
+    <string name="label_release_date">Tanggal Rilis</string>
+    <string name="label_rating">Penilaian</string>
+    <string name="rating">%s (%s suara)</string>
+    <string name="wifi_enable">Wifi aktif</string>
+    <string name="data_enable">Mobile data aktif</string>
+    <string name="no_internet">Tidak ada internet</string>
 </resources>
