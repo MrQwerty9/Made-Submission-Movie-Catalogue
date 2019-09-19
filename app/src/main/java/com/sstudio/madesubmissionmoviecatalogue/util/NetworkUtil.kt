@@ -2,8 +2,6 @@ package com.sstudio.madesubmissionmoviecatalogue.util
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
-import androidx.core.content.ContextCompat.getSystemService
 import com.sstudio.madesubmissionmoviecatalogue.R
 
 

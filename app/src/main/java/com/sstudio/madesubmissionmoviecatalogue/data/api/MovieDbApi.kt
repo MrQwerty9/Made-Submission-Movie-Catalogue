@@ -1,11 +1,11 @@
-package com.sstudio.madesubmissionmoviecatalogue.api
+package com.sstudio.madesubmissionmoviecatalogue.data.api
 
 import com.sstudio.madesubmissionmoviecatalogue.model.MoviesResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface Service {
+interface MovieDbApi {
 
     @GET("movie/popular")
     fun getPopularMovies(

@@ -1,18 +1,22 @@
 <resources>
-    <string name="app_name">Made Submission Movie Catalogue</string>
+    <public name="appbar_scrolling_view_behavior" type="string" />
+    <string name="app_name">Movie Catalogue</string>
     <string name="title_movie">Movie Title</string>
     <string name="lorem">lorem ipsum dolor sit amet</string>
     <string name="change_language_settings">Change Language Settings</string>
-    <string name="tab_1">Movie</string>
-    <string name="tab_2">Tv Show</string>
+    <string name="tab_movie">Movie</string>
+    <string name="tab_tv">Tv Show</string>
+    <string name="tab_favorite">Favorite</string>
     <string name="txt_image_poster">image poster</string>
     <string name="txt_release_date">17 Agusus 2019</string>
     <string name="language">en-US</string>
-    <public name="appbar_scrolling_view_behavior" type="string"/>
     <string name="label_release_date">Release Date</string>
     <string name="label_rating">Rating</string>
     <string name="rating">%s (%s votes)</string>
     <string name="wifi_enable">Wifi enabled</string>
     <string name="data_enable">Mobile data enabled</string>
     <string name="no_internet">No internet is available</string>
+    <string name="error_data">Error fetching data:</string>
+    <string name="favorite_added">successfully added to favorites</string>
+    <string name="favorite_removed">successfully removed from favorites</string>
 </resources>

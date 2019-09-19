@@ -10,11 +10,13 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
-import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.DetailActivity
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
+import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.DetailActivity
 import kotlinx.android.synthetic.main.item_movie.view.*
+
 
 class MovieTvAdapter(private val context: Context, private val isMovie: Boolean) :
     RecyclerView.Adapter<MovieTvAdapter.ViewHolder>() {
@@ -32,7 +34,7 @@ class MovieTvAdapter(private val context: Context, private val isMovie: Boolean)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val movie = movieTv[position]
-        movie.isMovie = isMovie
+        movie.isMovie = if (isMovie) 1 else 0
         if (isMovie) { //movie tab is active
             holder.txtTitle.text = movie.title
             holder.txtReleaseDate.text = movie.releaseDate

@@ -1,10 +1,11 @@
 <resources>
-    <string name="app_name">Submission2 Movie Catalogue</string>
+    <string name="app_name">Movie Catalogue</string>
     <string name="title_movie">Judul Film</string>
     <string name="lorem">lorem ipsum dolor sit amet</string>
     <string name="change_language_settings">Ubah Pengaturan Bahasa</string>
-    <string name="tab_1">Film</string>
-    <string name="tab_2">Acara Tv</string>
+    <string name="tab_movie">Film</string>
+    <string name="tab_tv">Acara Tv</string>
+    <string name="tab_favorite">Favorit</string>
     <string name="txt_image_poster">image poster</string>
     <string name="txt_release_date">17 Agusus 2019</string>
     <string name="language">id</string>
@@ -15,4 +16,7 @@
     <string name="wifi_enable">Wifi aktif</string>
     <string name="data_enable">Mobile data aktif</string>
     <string name="no_internet">Tidak ada internet</string>
+    <string name="error_data">Kesalahan mengambil data:</string>
+    <string name="favorite_added">berhasil ditambahkan ke favorit</string>
+    <string name="favorite_removed">berhasil dihapus dari favorit</string>
 </resources>
