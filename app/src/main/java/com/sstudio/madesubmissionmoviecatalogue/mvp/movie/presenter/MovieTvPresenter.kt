@@ -8,8 +8,4 @@ interface MovieTvPresenter {
     fun loadFavorite(isMovie: Boolean)
     fun dumpData()
     fun init()
-    var movies: List<MovieTv>?
-    var tvShow: List<MovieTv>?
-    var moviesFavorite: List<MovieTv>?
-    var tvShowFavorite: List<MovieTv>?
 }

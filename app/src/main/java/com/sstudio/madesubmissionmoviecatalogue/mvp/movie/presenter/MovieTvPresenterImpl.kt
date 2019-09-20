@@ -23,10 +23,10 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
     private lateinit var movieTvInteractor: MovieTvInteractor
     private lateinit var detailInteractor: DetailInteractor
     private val disposable = CompositeDisposable()
-    override var movies: List<MovieTv>? = null
-    override var tvShow: List<MovieTv>? = null
-    override var moviesFavorite: List<MovieTv>? = null
-    override var tvShowFavorite: List<MovieTv>? = null
+    var movies: List<MovieTv>? = null
+    var tvShow: List<MovieTv>? = null
+    var moviesFavorite: List<MovieTv>? = null
+    var tvShowFavorite: List<MovieTv>? = null
 
     constructor(
         context: Context,

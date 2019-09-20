@@ -15,7 +15,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "YOUTUBE", "\"https://youtube.com/watch?v=\""
-        buildConfigField "String", "BASE_URL", "\"http://api.themoviedb.org/3/\""
+        buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
         buildConfigField "String", "TMDB_API_KEY", "\"a65ec405c3a90543b914c39e1a1faa00\""
         buildConfigField "String", "POSTER", "\"https://image.tmdb.org/t/p/w500\""
     }
@@ -25,6 +25,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = kotlin_version
+        targetCompatibility = kotlin_version
+    }
+    buildToolsVersion = '29.0.1'
 
     androidExtensions {
         experimental = true
@@ -49,12 +54,12 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha10'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'de.hdodenhof:circleimageview:3.0.0'
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
     implementation "com.squareup.retrofit2:retrofit:2.6.1"
     implementation "com.squareup.retrofit2:converter-gson:2.6.1"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
-    implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.6.1'
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
     testImplementation 'junit:junit:4.12'
 

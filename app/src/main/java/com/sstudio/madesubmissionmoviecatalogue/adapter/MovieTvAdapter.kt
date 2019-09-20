@@ -35,10 +35,10 @@ class MovieTvAdapter(private val context: Context, private val isMovie: Boolean)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val movie = movieTv[position]
         movie.isMovie = if (isMovie) 1 else 0
-        if (isMovie) { //movie tab is active
+        if (isMovie) {
             holder.txtTitle.text = movie.title
             holder.txtReleaseDate.text = movie.releaseDate
-        }else{ //tv show tab is active
+        }else{
             holder.txtTitle.text = movie.name
             holder.txtReleaseDate.text = movie.firstAirDate
         }

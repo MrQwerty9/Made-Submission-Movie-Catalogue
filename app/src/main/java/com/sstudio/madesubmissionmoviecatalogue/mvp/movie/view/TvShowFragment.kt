@@ -29,7 +29,7 @@ class TvShowFragment : Fragment(), MovieTvView {
     private lateinit var mView: View
     @Inject
     lateinit var movieTvPresenter: MovieTvPresenter
-    private lateinit var viewModel: MovieTvPresenter
+    private lateinit var viewModel: MovieTvPresenterImpl
     private var myReceiver: BroadcastReceiver? = null
     var isShowFavorite = false
 
@@ -48,7 +48,7 @@ class TvShowFragment : Fragment(), MovieTvView {
     }
 
     private fun init(){
-        isShowFavorite = (parentFragment as FavoriteFragment?) != null //this fragment showing movies or favorite movies
+        isShowFavorite = (parentFragment as FavoriteFragment?) != null
         progressVisible()
         activity?.let {
             movieTvAdapter = MovieTvAdapter(it, false)
@@ -128,7 +128,7 @@ class TvShowFragment : Fragment(), MovieTvView {
 
     override fun onDetach() {
         super.onDetach()
-        if (MainActivity.isResetViewModel) { //reset viewmodel when changing language
+        if (MainActivity.isResetViewModel) {
             setViewModel()
             viewModel.tvShow = null
             MainActivity.isResetViewModel = false
