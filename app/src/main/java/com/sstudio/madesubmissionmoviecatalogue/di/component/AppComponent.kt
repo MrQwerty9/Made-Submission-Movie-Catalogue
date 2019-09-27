@@ -15,4 +15,5 @@ import javax.inject.Singleton
 interface AppComponent {
     fun plus(movieTvModule: MovieTvModule, interactorModule: InteractorModule): MovieTvComponent
     fun plus(detailModule: DetailModule, interactorModule: InteractorModule): DetailComponent
+    fun plus(interactorModule: InteractorModule): InteractorComponent
 }

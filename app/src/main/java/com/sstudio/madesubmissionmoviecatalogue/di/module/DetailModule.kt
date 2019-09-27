@@ -4,7 +4,7 @@ import android.content.Context
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.DetailPresenter
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.DetailPresenterImpl
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.DetailView
-import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.DetailInteractor
+import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.FavoriteInteractor
 import dagger.Module
 import dagger.Provides
 
@@ -17,11 +17,11 @@ class DetailModule(private val detailView: DetailView) {
     }
 
     @Provides
-    fun provideDetailPresenter(context: Context, detailView: DetailView, detailInteractor: DetailInteractor): DetailPresenter {
+    fun provideDetailPresenter(context: Context, detailView: DetailView, favoriteInteractor: FavoriteInteractor): DetailPresenter {
         return DetailPresenterImpl(
             context,
             detailView,
-            detailInteractor
+            favoriteInteractor
         )
     }
 }

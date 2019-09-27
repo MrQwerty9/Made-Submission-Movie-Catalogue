@@ -1,12 +1,16 @@
 package com.sstudio.madesubmissionmoviecatalogue.mvp.detail
 
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.sstudio.madesubmissionmoviecatalogue.App
 import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
+import com.sstudio.madesubmissionmoviecatalogue.FavoriteWidget
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.DetailPresenter
@@ -23,7 +27,6 @@ class DetailActivity : AppCompatActivity(), DetailView {
 
     companion object {
         const val EXTRA_DETAIL = "extra_detail"
-        var isShowFavorite = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,16 +39,12 @@ class DetailActivity : AppCompatActivity(), DetailView {
     }
 
     private val favoriteOnClick = View.OnClickListener {
-        if (isShowFavorite) {
-            detailPresenter.removeFavorite(movieTv.id)
-        } else {
-            detailPresenter.addFavorite(movieTv)
-        }
+        detailPresenter.favoriteClick(movieTv)
     }
 
     private fun showMovieDetail() {
         movieTv = intent.getParcelableExtra(EXTRA_DETAIL)
-        val poster = BuildConfig.POSTER + movieTv.posterPath
+        val poster = (BuildConfig.POSTER + movieTv.posterPath).toUri()
         val rating =
             String.format(
                 resources.getString(R.string.rating),
@@ -78,14 +77,8 @@ class DetailActivity : AppCompatActivity(), DetailView {
         collapsingToolbar.setExpandedTitleMargin(50, 50, 250, 50)
     }
 
-    override fun isShowFavorite(isFav: Boolean) {
-        if (isFav) {
-            isShowFavorite = true
-            btn_favorite.setImageResource(R.drawable.ic_favorite_pink_24dp)
-        } else {
-            isShowFavorite = false
-            btn_favorite.setImageResource(R.drawable.ic_favorite_white_24dp)
-        }
+    override fun isShowFavorite(resource: Int) {
+        btn_favorite.setImageResource(resource)
     }
 
 

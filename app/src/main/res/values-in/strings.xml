@@ -19,4 +19,19 @@
     <string name="error_data">Kesalahan mengambil data:</string>
     <string name="favorite_added">berhasil ditambahkan ke favorit</string>
     <string name="favorite_removed">berhasil dihapus dari favorit</string>
+    <string name="appwidget_text">STAR WARS BANNER</string>
+    <string name="empty_text">DATA TIDAK ADA</string>
+    <string name="search">Cari</string>
+    <string name="content_title">Content title</string>
+    <string name="content_text">Content text</string>
+    <string name="subtext">Sub text</string>
+
+    <string name="msg_daily_reminder">Hai!</string>
+    <string name="msg_daily_reminder_content">Kami merindukanmu, ayo lihat film-film terbaru!</string>
+    <string name="msg_released_reminder">Kabar Baik!</string>
+    <string name="msg_released_reminder_content">dirilis hari ini.</string>
+    <string name="msg_released_set"> Pengingat rilis hari ini telah diatur.</string>
+    <string name="msg_released_unset"> Pengingat rilis hari ini tidak diatur.</string>
+    <string name="msg_daily_set"> Pengingat harian telah diatur.</string>
+    <string name="msg_daily_unset"> Pengingat harian tidak diatur.</string>
 </resources>

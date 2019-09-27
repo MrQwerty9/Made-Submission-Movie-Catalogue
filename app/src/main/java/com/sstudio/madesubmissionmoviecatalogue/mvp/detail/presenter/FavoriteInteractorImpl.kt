@@ -4,10 +4,14 @@ import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDao
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import io.reactivex.Flowable
 
-class DetailInteractorImpl(private val favoriteDao: FavoriteDao) :
-    DetailInteractor {
+class FavoriteInteractorImpl(private val favoriteDao: FavoriteDao) :
+    FavoriteInteractor {
     override fun getFavorite(): Flowable<List<MovieTv>> {
-        return favoriteDao.getAllList()
+        return favoriteDao.getFavorite()
+    }
+
+    override fun getFavoriteSync(): List<MovieTv> {
+        return favoriteDao.getFavoriteSync()
     }
 
     override fun getFavoriteById(id: Int): Flowable<List<MovieTv>> {

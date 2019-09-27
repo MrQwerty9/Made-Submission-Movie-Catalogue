@@ -1,7 +1,7 @@
 package com.sstudio.madesubmissionmoviecatalogue.di.module
 
 import android.content.Context
-import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.DetailInteractor
+import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.FavoriteInteractor
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter.MovieTvPresenter
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter.MovieTvPresenterImpl
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter.MovieTvInteractor
@@ -19,13 +19,13 @@ class MovieTvModule(private val movieTvView: MovieTvView) {
 
     @Provides
     fun provideMovieTvPresenter(context: Context, movieTvView: MovieTvView, movieTvInteractor: MovieTvInteractor,
-                                detailInteractor: DetailInteractor
+                                favoriteInteractor: FavoriteInteractor
     ): MovieTvPresenter {
         return MovieTvPresenterImpl(
             context,
             movieTvView,
             movieTvInteractor,
-            detailInteractor
+            favoriteInteractor
         )
     }
 }

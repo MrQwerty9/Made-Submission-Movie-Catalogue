@@ -19,4 +19,19 @@
     <string name="error_data">Error fetching data:</string>
     <string name="favorite_added">successfully added to favorites</string>
     <string name="favorite_removed">successfully removed from favorites</string>
+    <string name="appwidget_text">STAR WARS BANNER</string>
+    <string name="empty_text">NO DATA</string>
+    <string name="search">Search</string>
+    <string name="content_title">Content title</string>
+    <string name="content_text">Content text</string>
+    <string name="subtext">Sub text</string>
+
+    <string name="msg_daily_reminder">Hello!</string>
+    <string name="msg_daily_reminder_content">We miss you, come and see the new movies!</string>
+    <string name="msg_released_reminder">Good News!</string>
+    <string name="msg_released_reminder_content"> been release today.</string>
+    <string name="msg_released_set"> Today\'s release reminder is set.</string>
+    <string name="msg_released_unset"> Today\'s release reminder is unset.</string>
+    <string name="msg_daily_set"> Daily Reminder is set.</string>
+    <string name="msg_daily_unset"> Daily Reminder is unset.</string>
 </resources>

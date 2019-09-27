@@ -4,9 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -17,11 +15,18 @@ import com.sstudio.madesubmissionmoviecatalogue.MyReceiver
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.adapter.MovieTvAdapter
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
-import com.sstudio.madesubmissionmoviecatalogue.mvp.MainActivity
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter.MovieTvPresenter
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter.MovieTvPresenterImpl
 import kotlinx.android.synthetic.main.fragment_movie.view.*
 import javax.inject.Inject
+import com.sstudio.madesubmissionmoviecatalogue.mvp.MainActivity
+import androidx.core.view.MenuItemCompat.getActionView
+import android.content.Context.SEARCH_SERVICE
+import androidx.core.content.ContextCompat.getSystemService
+import android.app.SearchManager
+import android.content.Context
+import android.util.Log
+import androidx.appcompat.widget.SearchView
 
 
 class MovieFragment : Fragment(), MovieTvView {
@@ -44,12 +49,41 @@ class MovieFragment : Fragment(), MovieTvView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         myReceiver = MyReceiver()
         mView = inflater.inflate(R.layout.fragment_movie, container, false)
         init()
         mView.swipe_refresh.setOnRefreshListener(movieRefresh)
         movieTvPresenter.init()
         return mView
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        val searchManager = activity?.getSystemService(SEARCH_SERVICE) as SearchManager?
+
+
+        if (searchManager != null) {
+            val searchView = menu.findItem(R.id.search).actionView as SearchView
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+            searchView.queryHint = resources.getString(R.string.search)
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    progressVisible()
+                    movieTvPresenter.findMovies(query)
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String): Boolean {
+                    if (newText.isEmpty()){
+                        progressVisible()
+                        movieTvPresenter.loadMovie()
+                    }
+                    return true
+                }
+            })
+        }
     }
 
     private fun init() {
@@ -112,16 +146,16 @@ class MovieFragment : Fragment(), MovieTvView {
     }
 
     override fun broadcastIntent() {
-        activity?.let {
+//        activity?.let {
             try {
-                it.registerReceiver(
+                activity?.registerReceiver(
                     myReceiver,
                     IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
                 )
             } catch (e: IllegalArgumentException) {
                 e.printStackTrace()
             }
-        }
+//        }
     }
 
     override fun onPause() {

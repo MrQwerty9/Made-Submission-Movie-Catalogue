@@ -10,7 +10,10 @@ import io.reactivex.Flowable
 @Dao
 interface FavoriteDao {
     @Query("SELECT * FROM favorite")
-    fun getAllList(): Flowable<List<MovieTv>>
+    fun getFavorite(): Flowable<List<MovieTv>>
+
+    @Query("SELECT * FROM favorite")
+    fun getFavoriteSync(): List<MovieTv>
 
     @Query("SELECT * FROM favorite WHERE id=:id")
     fun getById(id: Int): Flowable<List<MovieTv>>

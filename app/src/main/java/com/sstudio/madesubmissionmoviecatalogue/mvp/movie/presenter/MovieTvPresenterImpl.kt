@@ -7,7 +7,7 @@ import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.model.MoviesResponse
-import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.DetailInteractor
+import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.FavoriteInteractor
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view.MovieTvView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -21,7 +21,7 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
     lateinit var context: Context
     lateinit var movieTvView: MovieTvView
     private lateinit var movieTvInteractor: MovieTvInteractor
-    private lateinit var detailInteractor: DetailInteractor
+    private lateinit var favoriteInteractor: FavoriteInteractor
     private val disposable = CompositeDisposable()
     var movies: List<MovieTv>? = null
     var tvShow: List<MovieTv>? = null
@@ -32,12 +32,12 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
         context: Context,
         movieTvView: MovieTvView,
         movieTvInteractor: MovieTvInteractor,
-        detailInteractor: DetailInteractor
+        favoriteInteractor: FavoriteInteractor
     ) : this() {
         this.context = context
         this.movieTvView = movieTvView
         this.movieTvInteractor = movieTvInteractor
-        this.detailInteractor = detailInteractor
+        this.favoriteInteractor = favoriteInteractor
     }
 
     override fun loadMovie() {
@@ -84,7 +84,7 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
 
     override fun loadFavorite(isMovie: Boolean) {
         disposable.add(
-            detailInteractor.getFavorite()
+            favoriteInteractor.getFavorite()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn {
@@ -105,6 +105,50 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
                     movieTvView.failShowMoviesTv("${context.getString(R.string.error_data)} ${it?.message}")
                 })
         )
+    }
+
+    override fun findMovies(query: String) {
+        val call = movieTvInteractor.findMovie(
+            BuildConfig.TMDB_API_KEY,
+            context.getString(R.string.language),
+            query
+        )
+        call.enqueue(object : Callback<MoviesResponse> {
+            override fun onResponse(
+                call: Call<MoviesResponse>,
+                response: Response<MoviesResponse>
+            ) {
+                movies = response.body()?.movieTv
+                movieTvView.showMoviesTv(movies)
+            }
+
+            override fun onFailure(call: Call<MoviesResponse>, t: Throwable?) {
+                movieTvView.failShowMoviesTv("${context.getString(R.string.error_data)} ${t?.message}")
+                movieTvView.broadcastIntent()
+            }
+        })
+    }
+
+    override fun findTv(query: String) {
+        val call = movieTvInteractor.findTv(
+            BuildConfig.TMDB_API_KEY,
+            context.getString(R.string.language),
+            query
+        )
+        call.enqueue(object : Callback<MoviesResponse> {
+            override fun onResponse(
+                call: Call<MoviesResponse>,
+                response: Response<MoviesResponse>
+            ) {
+                movies = response.body()?.movieTv
+                movieTvView.showMoviesTv(movies)
+            }
+
+            override fun onFailure(call: Call<MoviesResponse>, t: Throwable?) {
+                movieTvView.failShowMoviesTv("${context.getString(R.string.error_data)} ${t?.message}")
+                movieTvView.broadcastIntent()
+            }
+        })
     }
 
     override fun dumpData() {

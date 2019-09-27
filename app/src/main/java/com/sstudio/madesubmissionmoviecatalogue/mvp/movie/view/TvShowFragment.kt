@@ -1,13 +1,14 @@
 package com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view
 
+import android.app.SearchManager
 import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
@@ -39,12 +40,41 @@ class TvShowFragment : Fragment(), MovieTvView {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        setHasOptionsMenu(true)
         myReceiver = MyReceiver()
         mView = inflater.inflate(R.layout.fragment_tvshow, container, false)
         init()
         mView.swipe_refresh.setOnRefreshListener(tvRefresh)
         movieTvPresenter.init()
         return mView
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager?
+
+
+        if (searchManager != null) {
+            val searchView = menu.findItem(R.id.search).actionView as SearchView
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+            searchView.queryHint = resources.getString(R.string.search)
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    progressVisible()
+                    movieTvPresenter.findTv(query)
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String): Boolean {
+                    if (newText.isEmpty()){
+                        progressVisible()
+                        movieTvPresenter.loadTvShow()
+                    }
+                    return true
+                }
+            })
+        }
     }
 
     private fun init(){
