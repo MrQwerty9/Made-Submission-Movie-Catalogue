@@ -6,6 +6,7 @@ import com.sstudio.madesubmissionmoviecatalogue.di.AppScope
 import com.sstudio.madesubmissionmoviecatalogue.di.module.DetailModule
 import com.sstudio.madesubmissionmoviecatalogue.di.module.InteractorModule
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.DetailActivity
+import com.sstudio.madesubmissionmoviecatalogue.provider.MovieTvProvider
 import dagger.Subcomponent
 
 @AppScope
@@ -13,4 +14,5 @@ import dagger.Subcomponent
 interface InteractorComponent {
     fun inject(stackRemoteViewsFactory: StackRemoteViewsFactory)
     fun inject(alarmReceiver: AlarmReceiver)
+    fun inject(movieTvProvider: MovieTvProvider)
 }

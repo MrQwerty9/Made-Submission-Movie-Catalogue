@@ -125,7 +125,7 @@ class MovieFragment : Fragment(), MovieTvView {
 
     override fun showMoviesTv(moviesTv: List<MovieTv>?) {
         moviesTv?.let {
-            movieTvAdapter.movieTv = it
+            movieTvAdapter.movieTv = it as ArrayList<MovieTv>
             if (isShowFavorite) {
                 viewModel.moviesFavorite = it
             } else {

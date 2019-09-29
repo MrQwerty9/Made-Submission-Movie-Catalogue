@@ -6,6 +6,7 @@ import android.widget.RemoteViewsService
 import android.graphics.Bitmap
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.core.net.toUri
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.FavoriteInteractor
@@ -37,6 +38,7 @@ class StackRemoteViewsFactory(private val context: Context) :
     }
 
     override fun onDataSetChanged() {
+        Log.d("mytag", "moviepresenter ${favoriteInteractor.getFavoriteSync()}")
         movies = favoriteInteractor.getFavoriteSync()
         setBitmap(movies)
     }

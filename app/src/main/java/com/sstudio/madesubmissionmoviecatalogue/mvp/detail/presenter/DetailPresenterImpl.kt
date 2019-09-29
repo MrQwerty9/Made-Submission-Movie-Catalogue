@@ -3,6 +3,7 @@ package com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
+import android.util.Log
 import com.sstudio.madesubmissionmoviecatalogue.FavoriteWidget
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
@@ -33,6 +34,7 @@ class DetailPresenterImpl(
     }
 
     override fun loadFavorite(id: Int) {
+
         disposable.add(
             favoriteInteractor.getFavoriteById(id)
                 .subscribeOn(Schedulers.io())

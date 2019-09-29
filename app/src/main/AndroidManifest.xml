@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ReminderActivity"
+        <activity
+            android:name=".ReminderActivity"
             android:parentActivityName=".mvp.MainActivity"></activity>
         <activity
             android:name=".mvp.detail.DetailActivity"
@@ -25,15 +26,12 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".FavoriteWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/favorite_widget_info" />
-        </receiver>
+        <provider
+            android:name=".provider.MovieTvProvider"
+            android:authorities="com.sstudio.madesubmissionmoviecatalogue"
+            android:exported="true"
+            android:readPermission="com.sstudio.madesubmissionmoviecatalogue.READ_DATABASE"
+            android:writePermission="com.sstudio.madesubmissionmoviecatalogue.WRITE_DATABASE" />
         <receiver
             android:name=".MyReceiver"
             android:enabled="true"
@@ -43,10 +41,27 @@
             android:enabled="true"
             android:exported="true" />
 
+        <receiver android:name=".FavoriteWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/favorite_widget_info" />
+        </receiver>
         <service
             android:name=".StackWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
+
+    <permission
+        android:name="com.sstudio.madesubmissionmoviecatalogue.WRITE_DATABASE"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="com.sstudio.madesubmissionmoviecatalogue.READ_DATABASE"
+        android:protectionLevel="normal" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-permission android:name="android.permission.INTERNET" />

@@ -46,6 +46,7 @@ class App: MultiDexApplication() {
     }
 
     fun createInteractorComponent(): InteractorComponent{
+//        appComponent = createAppComponent()
         return appComponent.plus(InteractorModule())
     }
 

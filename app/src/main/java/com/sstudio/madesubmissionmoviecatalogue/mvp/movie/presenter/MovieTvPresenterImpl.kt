@@ -2,6 +2,7 @@ package com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter
 
 import android.content.Context
 import android.content.res.Configuration
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
 import com.sstudio.madesubmissionmoviecatalogue.R
@@ -83,6 +84,7 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
     }
 
     override fun loadFavorite(isMovie: Boolean) {
+
         disposable.add(
             favoriteInteractor.getFavorite()
                 .subscribeOn(Schedulers.io())

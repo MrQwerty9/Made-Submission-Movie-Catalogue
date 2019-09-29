@@ -21,7 +21,13 @@ import kotlinx.android.synthetic.main.item_movie.view.*
 class MovieTvAdapter(private val context: Context, private val isMovie: Boolean) :
     RecyclerView.Adapter<MovieTvAdapter.ViewHolder>() {
 
-    var movieTv: List<MovieTv> = ArrayList()
+    var movieTv = ArrayList<MovieTv>()
+
+    fun setListNotes(note: ArrayList<MovieTv>){
+        movieTv.clear()
+        movieTv.addAll(note)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false)
