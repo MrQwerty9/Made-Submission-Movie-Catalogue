@@ -2,12 +2,17 @@ package com.sstudio.madesubmissionmoviecatalogue.provider
 
 import android.content.*
 import android.database.Cursor
+import android.database.Observable
 import android.net.Uri
+import android.os.Handler
+import android.util.Log
 import com.sstudio.madesubmissionmoviecatalogue.App
-import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb.Companion.AUTHORITY
+import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb.Companion.CONTENT_URI
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv.Companion.TABLE_NAME
+import com.sstudio.madesubmissionmoviecatalogue.mvp.MainActivity
+import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.DetailActivity
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.FavoriteInteractor
 import javax.inject.Inject
 
@@ -29,17 +34,14 @@ class MovieTvProvider : ContentProvider() {
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
-        when (sUriMatcher.match(uri)) {
+        val added= when (sUriMatcher.match(uri)) {
             NOTE -> {
                 val context = context ?: return null
-                val id = FavoriteDb.getInstance(context).favoriteDao()
-                    .insert(MovieTv.fromContentValues(values))
-                context.contentResolver.notifyChange(uri, null)
-                return ContentUris.withAppendedId(uri, id)
-            }
-            NOTE_ID -> throw IllegalArgumentException("Invalid URI, cannot insert with ID: $uri")
-            else -> throw IllegalArgumentException("Unknown URI: $uri")
+                favoriteInteractor.insertFavorite(MovieTv.fromContentValues(values))
+            } else -> 0
         }
+
+        return ContentUris.withAppendedId(uri, added)
     }
 
     override fun query(
@@ -59,7 +61,8 @@ class MovieTvProvider : ContentProvider() {
             } else {
                 cursor = favoriteInteractor.getFavByIdCursor(ContentUris.parseId(uri).toInt())
             }
-            cursor.setNotificationUri(context.contentResolver, uri)
+//            context.contentResolver.notifyChange(CONTENT_URI, DetailActivity.DataObserver(
+//                Handler(), context, true))
             return cursor
         } else {
             throw IllegalArgumentException("Unknown URI: $uri")
@@ -76,8 +79,16 @@ class MovieTvProvider : ContentProvider() {
         return 0
     }
 
-    override fun delete(p0: Uri, p1: String?, p2: Array<out String>?): Int {
-        return 0
+    override fun delete(uri: Uri, p1: String?, p2: Array<out String>?): Int {
+        val deleted: Int? = when (sUriMatcher.match(uri)) {
+            NOTE_ID -> {
+                val context = context ?: return 0
+                favoriteInteractor.removeFavorite(ContentUris.parseId(uri).toInt())
+            }
+            else -> 0
+        }
+
+        return deleted as Int
     }
 
     override fun getType(p0: Uri): String? {

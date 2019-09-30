@@ -27,11 +27,11 @@ class FavoriteInteractorImpl(private val favoriteDao: FavoriteDao) :
         return favoriteDao.getFavByIdCursor(id)
     }
 
-    override fun insertFavorite(movieTv: MovieTv) {
-        favoriteDao.insert(movieTv)
+    override fun insertFavorite(movieTv: MovieTv): Long {
+        return favoriteDao.insertFavorite(movieTv)
     }
 
-    override fun removeFavorite(id: Int) {
-        favoriteDao.delete(id)
+    override fun removeFavorite(id: Int): Int {
+        return favoriteDao.deleteFavorite(id)
     }
 }

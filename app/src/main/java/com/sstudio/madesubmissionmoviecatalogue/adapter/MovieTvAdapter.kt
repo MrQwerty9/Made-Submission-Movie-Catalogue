@@ -25,12 +25,6 @@ class MovieTvAdapter(private val context: Context, private val isMovie: Boolean)
 
     var movieTv = ArrayList<MovieTv>()
 
-    fun setListNotes(note: ArrayList<MovieTv>){
-        movieTv.clear()
-        movieTv.addAll(note)
-        notifyDataSetChanged()
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false)
         return ViewHolder(view)

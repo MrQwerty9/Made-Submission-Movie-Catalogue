@@ -1,5 +1,6 @@
 package com.sstudio.madesubmissionmoviecatalogue.helper
 
+import android.content.ContentValues
 import android.database.Cursor
 import android.provider.BaseColumns._ID
 import android.util.Log
@@ -43,6 +44,23 @@ class MappingHelper {
                 notesList.add(MovieTv(posterPath, overview, releaseDate, id, title, voteAverage, voteCount, name, firstAirDate, genre, isMovie))
             }
             return notesList
+        }
+
+        fun mapMovieTvToContentValues(movieTv: MovieTv): ContentValues{
+            val values = ContentValues()
+            values.put(COLUMN_POSTERPATH, movieTv.posterPath)
+            values.put(COLUMN_OVERVIEW, movieTv.overview)
+            values.put(COLUMN_RELEASEDATE, movieTv.releaseDate)
+            values.put(COLUMN_ID, movieTv.id)
+            values.put(COLUMN_TITLE, movieTv.title)
+            values.put(COLUMN_VOTEAVERAGE, movieTv.voteAverage)
+            values.put(COLUMN_VOTECOUNT, movieTv.voteCount)
+            values.put(COLUMN_NAME, movieTv.name)
+            values.put(COLUMN_FIRSTAIRDATE, movieTv.firstAirDate)
+            values.put(COLUMN_GENRE, movieTv.genre)
+            values.put(COLUMN_ISMOVIE, movieTv.isMovie)
+
+            return values
         }
     }
 }

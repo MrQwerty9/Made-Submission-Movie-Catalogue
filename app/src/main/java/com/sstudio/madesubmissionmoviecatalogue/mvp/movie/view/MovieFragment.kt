@@ -27,11 +27,8 @@ import android.database.Cursor
 import android.os.AsyncTask
 import android.os.Handler
 import android.os.HandlerThread
-import android.util.Log
 import androidx.appcompat.widget.SearchView
-import com.sstudio.madesubmissionmoviecatalogue.LoadMoviesCallback
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb
-import com.sstudio.madesubmissionmoviecatalogue.helper.MappingHelper
 import java.lang.ref.WeakReference
 
 
@@ -198,11 +195,6 @@ class MovieFragment : Fragment(), MovieTvView {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        movieTvPresenter.dumpData()
-    }
-
     internal class LoadFavoriteAsync internal constructor(
         movieTvPresenter: MovieTvPresenter
     ) : AsyncTask<Void, Void, Cursor>() {
@@ -215,7 +207,7 @@ class MovieFragment : Fragment(), MovieTvView {
 
         override fun onPostExecute(result: Cursor?) {
             super.onPostExecute(result)
-            result?.let { weakCallback.get()?.favoriteToListProvider(it, true) }
+            result?.let { weakCallback.get()?.showFavoriteProvider(it, true) }
         }
     }
 

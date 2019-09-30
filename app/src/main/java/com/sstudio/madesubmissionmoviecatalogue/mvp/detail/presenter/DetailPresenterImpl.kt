@@ -2,6 +2,7 @@ package com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter
 
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
@@ -10,6 +11,7 @@ import android.util.Log
 import com.sstudio.madesubmissionmoviecatalogue.FavoriteWidget
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb
+import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb.Companion.CONTENT_URI
 import com.sstudio.madesubmissionmoviecatalogue.helper.MappingHelper
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.DetailView
@@ -33,31 +35,17 @@ class DetailPresenterImpl(
     private val disposable = CompositeDisposable()
     private var isShowFavorite = false
 
-    override fun favoriteClick(movieTv: MovieTv) {
+    override fun favoriteClick(movieTv: MovieTv, uri: Uri) {
         if (isShowFavorite) {
-            removeFavorite(movieTv.id)
+//            removeFavorite(movieTv.id)
+            removeFavoriteProvider(uri)
         } else {
-            addFavorite(movieTv)
+//            addFavorite(movieTv)
+            addFavoriteProvider(movieTv)
         }
     }
 
-    override fun loadFavorite(id: Int) {
-
-        disposable.add(
-            favoriteInteractor.getFavoriteById(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    //set favorite button
-
-
-                }, {
-                    detailView.toast("${context.getString(R.string.error_data)} ${it?.message}")
-                })
-        )
-    }
-
-    override fun loadFavoriteProvider(id: Int, uri: Uri): Cursor? {
+    override fun loadFavoriteProvider(uri: Uri): Cursor? {
         return context.contentResolver.query(uri, null, null, null, null)
     }
 
@@ -72,25 +60,9 @@ class DetailPresenterImpl(
         }
     }
 
-    override fun addFavorite(movieTv: MovieTv) {
-        Completable.fromAction {
-            favoriteInteractor.insertFavorite(movieTv)
-        }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(object :
-            CompletableObserver {
-            override fun onComplete() {
-                detailView.toast("${context.getString(R.string.favorite_added)} ")
-                widgetNotifChanged()
-            }
-
-            override fun onSubscribe(d: Disposable) {
-
-            }
-
-            override fun onError(e: Throwable) {
-                detailView.toast("${e.message}")
-            }
-
-        })
+    override fun addFavoriteProvider(movieTv: MovieTv) {
+        val values = MappingHelper.mapMovieTvToContentValues(movieTv)
+        context.contentResolver.insert(CONTENT_URI, values)
     }
 
     override fun removeFavorite(id: Int) {
@@ -111,6 +83,10 @@ class DetailPresenterImpl(
                 detailView.toast("${e.message}")
             }
         })
+    }
+
+    override fun removeFavoriteProvider(uri: Uri) {
+        context.contentResolver.delete(uri, null, null)
     }
 
     override fun dumpData() {

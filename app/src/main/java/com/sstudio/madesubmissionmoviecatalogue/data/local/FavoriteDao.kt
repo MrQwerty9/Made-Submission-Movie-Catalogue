@@ -26,8 +26,8 @@ interface FavoriteDao {
     fun getFavByIdCursor(id: Int): Cursor
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(movieTv: MovieTv): Long
+    fun insertFavorite(movieTv: MovieTv): Long
 
     @Query("DELETE FROM favorite WHERE id=:id")
-    fun delete(id: Int)
+    fun deleteFavorite(id: Int): Int
 }

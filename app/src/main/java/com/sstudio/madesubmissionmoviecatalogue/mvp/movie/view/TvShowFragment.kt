@@ -11,7 +11,6 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -20,7 +19,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sstudio.madesubmissionmoviecatalogue.App
-import com.sstudio.madesubmissionmoviecatalogue.LoadMoviesCallback
 import com.sstudio.madesubmissionmoviecatalogue.MyReceiver
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.adapter.MovieTvAdapter
@@ -29,7 +27,6 @@ import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.mvp.MainActivity
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter.MovieTvPresenter
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter.MovieTvPresenterImpl
-import com.sstudio.madesubmissionmoviecatalogue.helper.MappingHelper
 import kotlinx.android.synthetic.main.fragment_tvshow.view.*
 import java.lang.ref.WeakReference
 import javax.inject.Inject
@@ -194,28 +191,6 @@ class TvShowFragment : Fragment(), MovieTvView {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        movieTvPresenter.dumpData()
-    }
-
-    internal class LoadFavoriteAsync internal constructor(
-        movieTvPresenter: MovieTvPresenter
-    ) : AsyncTask<Void, Void, Cursor>() {
-
-        private val weakCallback = WeakReference(movieTvPresenter)
-
-        override fun doInBackground(vararg p0: Void?): Cursor? {
-            return weakCallback.get()?.loadFavoriteProvider()
-        }
-
-        override fun onPostExecute(result: Cursor?) {
-            super.onPostExecute(result)
-            result?.let { weakCallback.get()?.favoriteToListProvider(result, false) }
-        }
-    }
-
-
     private fun toast(text: String?) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
@@ -230,6 +205,22 @@ class TvShowFragment : Fragment(), MovieTvView {
 
     private fun progressGone() {
         mView.loading_progress.visibility = View.GONE
+    }
+
+    internal class LoadFavoriteAsync internal constructor(
+        movieTvPresenter: MovieTvPresenter
+    ) : AsyncTask<Void, Void, Cursor>() {
+
+        private val weakCallback = WeakReference(movieTvPresenter)
+
+        override fun doInBackground(vararg p0: Void?): Cursor? {
+            return weakCallback.get()?.loadFavoriteProvider()
+        }
+
+        override fun onPostExecute(result: Cursor?) {
+            super.onPostExecute(result)
+            result?.let { weakCallback.get()?.showFavoriteProvider(result, false) }
+        }
     }
 
     class DataObserver(handler: Handler, private val movieTvPresenter: MovieTvPresenter) : ContentObserver(handler) {

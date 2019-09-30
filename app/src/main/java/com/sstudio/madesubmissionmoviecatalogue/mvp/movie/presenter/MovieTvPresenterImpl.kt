@@ -26,7 +26,6 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
     lateinit var movieTvView: MovieTvView
     private lateinit var movieTvInteractor: MovieTvInteractor
     private lateinit var favoriteInteractor: FavoriteInteractor
-    private val disposable = CompositeDisposable()
     var movies: List<MovieTv>? = null
     var tvShow: List<MovieTv>? = null
     var moviesFavorite: List<MovieTv>? = null
@@ -90,7 +89,7 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
         return context.contentResolver.query(FavoriteDb.CONTENT_URI, null, null, null, null)
     }
 
-    override fun favoriteToListProvider(cursor: Cursor, isMovie: Boolean) {
+    override fun showFavoriteProvider(cursor: Cursor, isMovie: Boolean) {
         val listNotes = MappingHelper.mapCursorToArrayList(cursor)
         val list = ArrayList<MovieTv>()
         for (movieTv in listNotes) {
@@ -101,32 +100,6 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
             }
         }
         movieTvView.showMoviesTv(list)
-    }
-
-    override fun loadFavorite(isMovie: Boolean) {
-
-        disposable.add(
-            favoriteInteractor.getFavorite()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorReturn {
-                    movieTvView.failShowMoviesTv(it.message)
-                    Collections.emptyList()
-                }
-                .subscribe({
-                    val list = ArrayList<MovieTv>()
-                    for (movieTv in it) {
-                        if (isMovie && movieTv.isMovie == 1) {
-                            list.add(movieTv)
-                        } else if (!isMovie && movieTv.isMovie == 0) {
-                            list.add(movieTv)
-                        }
-                    }
-                    movieTvView.showMoviesTv(list)
-                }, {
-                    movieTvView.failShowMoviesTv("${context.getString(R.string.error_data)} ${it?.message}")
-                })
-        )
     }
 
     override fun findMovies(query: String) {
@@ -171,10 +144,6 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
                 movieTvView.broadcastIntent()
             }
         })
-    }
-
-    override fun dumpData() {
-        disposable.dispose()
     }
 
     override fun init() {
