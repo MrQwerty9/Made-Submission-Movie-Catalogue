@@ -23,7 +23,7 @@ interface FavoriteDao {
     fun getFavoriteCursor(): Cursor
 
     @Query("SELECT * FROM favorite WHERE id=:id")
-    fun getByIdCursor(id: Int): Cursor
+    fun getFavByIdCursor(id: Int): Cursor
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movieTv: MovieTv): Long

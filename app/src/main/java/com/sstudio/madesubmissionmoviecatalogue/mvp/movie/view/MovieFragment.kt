@@ -20,13 +20,19 @@ import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter.MovieTvPrese
 import kotlinx.android.synthetic.main.fragment_movie.view.*
 import javax.inject.Inject
 import com.sstudio.madesubmissionmoviecatalogue.mvp.MainActivity
-import androidx.core.view.MenuItemCompat.getActionView
-import android.content.Context.SEARCH_SERVICE
-import androidx.core.content.ContextCompat.getSystemService
 import android.app.SearchManager
 import android.content.Context
+import android.database.ContentObserver
+import android.database.Cursor
+import android.os.AsyncTask
+import android.os.Handler
+import android.os.HandlerThread
 import android.util.Log
 import androidx.appcompat.widget.SearchView
+import com.sstudio.madesubmissionmoviecatalogue.LoadMoviesCallback
+import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb
+import com.sstudio.madesubmissionmoviecatalogue.helper.MappingHelper
+import java.lang.ref.WeakReference
 
 
 class MovieFragment : Fragment(), MovieTvView {
@@ -38,10 +44,13 @@ class MovieFragment : Fragment(), MovieTvView {
     private lateinit var viewModel: MovieTvPresenterImpl
     private var myReceiver: BroadcastReceiver? = null
     private var isShowFavorite = false
+    private lateinit var myObserver: MovieFragment.DataObserver
+    private lateinit var handlerThread: HandlerThread
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (context?.applicationContext as App).createMovieComponent(this).inject(this)
+        initHandler()
     }
 
     override fun onCreateView(
@@ -60,7 +69,7 @@ class MovieFragment : Fragment(), MovieTvView {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        val searchManager = activity?.getSystemService(SEARCH_SERVICE) as SearchManager?
+        val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager?
 
 
         if (searchManager != null) {
@@ -76,7 +85,7 @@ class MovieFragment : Fragment(), MovieTvView {
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
-                    if (newText.isEmpty()){
+                    if (newText.isEmpty()) {
                         progressVisible()
                         movieTvPresenter.loadMovie()
                     }
@@ -98,13 +107,25 @@ class MovieFragment : Fragment(), MovieTvView {
         notifChanged()
     }
 
+    private fun initHandler() {
+        handlerThread = HandlerThread("DataObserver")
+        handlerThread.start()
+        val handler = Handler(handlerThread.looper)
+        context?.let {
+            myObserver = DataObserver(handler, movieTvPresenter)
+            it.contentResolver?.registerContentObserver(FavoriteDb.CONTENT_URI, true, myObserver)
+        }
+    }
+
     private fun setViewModel() {
         viewModel = ViewModelProviders.of(this)
             .get(MovieTvPresenterImpl::class.java)
         if (viewModel.movies == null && !isShowFavorite) {
             movieTvPresenter.loadMovie()
         } else if (viewModel.moviesFavorite == null && isShowFavorite) {
-            movieTvPresenter.loadFavorite(true)
+//            movieTvPresenter.loadFavorite(true)
+            context?.let { MovieFragment.LoadFavoriteAsync(movieTvPresenter).execute() }
+
         } else if (isShowFavorite) {
             showMoviesTv(viewModel.moviesFavorite)
         } else {
@@ -117,7 +138,8 @@ class MovieFragment : Fragment(), MovieTvView {
             mView.swipe_refresh.isRefreshing = false
             init()
             if (isShowFavorite) {
-                movieTvPresenter.loadFavorite(true)
+//                movieTvPresenter.loadFavorite(true)
+                context?.let { MovieFragment.LoadFavoriteAsync(movieTvPresenter).execute() }
             } else {
                 movieTvPresenter.loadMovie()
             }
@@ -146,16 +168,14 @@ class MovieFragment : Fragment(), MovieTvView {
     }
 
     override fun broadcastIntent() {
-//        activity?.let {
-            try {
-                activity?.registerReceiver(
-                    myReceiver,
-                    IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-                )
-            } catch (e: IllegalArgumentException) {
-                e.printStackTrace()
-            }
-//        }
+        try {
+            activity?.registerReceiver(
+                myReceiver,
+                IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+            )
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+        }
     }
 
     override fun onPause() {
@@ -183,6 +203,22 @@ class MovieFragment : Fragment(), MovieTvView {
         movieTvPresenter.dumpData()
     }
 
+    internal class LoadFavoriteAsync internal constructor(
+        movieTvPresenter: MovieTvPresenter
+    ) : AsyncTask<Void, Void, Cursor>() {
+
+        private val weakCallback = WeakReference(movieTvPresenter)
+
+        override fun doInBackground(vararg p0: Void?): Cursor? {
+            return weakCallback.get()?.loadFavoriteProvider()
+        }
+
+        override fun onPostExecute(result: Cursor?) {
+            super.onPostExecute(result)
+            result?.let { weakCallback.get()?.favoriteToListProvider(it, true) }
+        }
+    }
+
     private fun toast(text: String?) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
@@ -191,11 +227,20 @@ class MovieFragment : Fragment(), MovieTvView {
         movieTvAdapter.notifyDataSetChanged()
     }
 
-    private fun progressVisible() {
+    internal fun progressVisible() {
         mView.loading_progress.visibility = View.VISIBLE
     }
 
     private fun progressGone() {
         mView.loading_progress.visibility = View.GONE
+    }
+
+    class DataObserver(handler: Handler, private val movieTvPresenter: MovieTvPresenter) : ContentObserver(handler) {
+
+        override fun onChange(selfChange: Boolean) {
+            super.onChange(selfChange)
+            MovieFragment.LoadFavoriteAsync(movieTvPresenter).execute()
+
+        }
     }
 }

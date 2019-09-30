@@ -80,7 +80,7 @@ class StackRemoteViewsFactory(private val context: Context) :
         for (i in 0 until list.size) {
             val futureBitmap: FutureTarget<Bitmap>  = Glide.with(context)
                 .asBitmap()
-                .load((BuildConfig.POSTER + list[i].posterPath).toUri())
+                .load((BuildConfig.POSTER_DETAIL + list[i].posterPath).toUri())
                 .submit()
             items.add(futureBitmap.get())
         }

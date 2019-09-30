@@ -2,12 +2,7 @@ package com.sstudio.madesubmissionmoviecatalogue.provider
 
 import android.content.*
 import android.database.Cursor
-import android.database.MatrixCursor
 import android.net.Uri
-import android.util.Log
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
 import com.sstudio.madesubmissionmoviecatalogue.App
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb.Companion.AUTHORITY
@@ -54,62 +49,15 @@ class MovieTvProvider : ContentProvider() {
         selectionArgs: Array<String>?,
         sortOrder: String?
     ): Cursor? {
-//        Log.d("mytag", "provider $uri")
-//        if (sUriMatcher.match(uri) == NOTE) {
-//            val columns =
-//                arrayOf(
-//                    "poster_path",
-//                    "overview",
-//                    "release_date",
-//                    "id",
-//                    "original_title",
-//                    "vote_average",
-//                    "vote_count",
-//                    "original_name",
-//                    "first_air_date",
-//                    "genre",
-//                    "isMovie"
-//                )
-//            val matrixCursor = MatrixCursor(columns)
-//            var movies: List<MovieTv>? = ArrayList()
-//            favoriteInteractor.getFavorite().subscribe() {
-//
-////                Log.d("mytag", "provid it $it")
-//                movies = it as ArrayList<MovieTv>
-////                Log.d("mytag", "provid $movies")
-//
-//
-//
-//                for (movie in movies!!) {
-//                    matrixCursor.addRow(
-//                        arrayOf(
-//                            movie.posterPath,
-//                            movie.overview,
-//                            movie.releaseDate,
-//                            movie.id,
-//                            movie.title,
-//                            movie.voteAverage,
-//                            movie.voteCount,
-//                            movie.name,
-//                            movie.firstAirDate,
-//                            movie.genre,
-//                            movie.isMovie
-//                        )
-//                    )
-//                }
-//            }
-//        val code = MATCHER.match(uri)
-
         initInject()
 
         if (sUriMatcher.match(uri) == NOTE || sUriMatcher.match(uri) == NOTE_ID) {
             val context = context ?: return null
-            val menu = FavoriteDb.getInstance(context).favoriteDao()
             val cursor: Cursor
             if (sUriMatcher.match(uri) == NOTE) {
                 cursor = favoriteInteractor.getFavoriteCursor()
             } else {
-                cursor = menu.getByIdCursor(ContentUris.parseId(uri).toInt())
+                cursor = favoriteInteractor.getFavByIdCursor(ContentUris.parseId(uri).toInt())
             }
             cursor.setNotificationUri(context.contentResolver, uri)
             return cursor

@@ -2,6 +2,7 @@ package com.sstudio.madesubmissionmoviecatalogue.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
 import com.sstudio.madesubmissionmoviecatalogue.R
+import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb.Companion.CONTENT_URI
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.DetailActivity
 import kotlinx.android.synthetic.main.item_movie.view.*
@@ -49,13 +51,19 @@ class MovieTvAdapter(private val context: Context, private val isMovie: Boolean)
             holder.txtReleaseDate.text = movie.firstAirDate
         }
         holder.txtOverview.text = movie.overview
-        val poster = BuildConfig.POSTER + movie.posterPath
+        val poster = BuildConfig.POSTER_LIST + movie.posterPath
         Glide.with(context)
             .load(poster)
+            .thumbnail(0.5f)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(R.drawable.ic_cloud_download_grey_24dp)
             .into(holder.imgPoster)
         holder.cardMovie.setOnClickListener {
             val intent = Intent(context, DetailActivity::class.java)
+            val uri =
+                Uri.parse("$CONTENT_URI/" + movieTv[position].id)
+            intent.data = uri
             intent.putExtra(DetailActivity.EXTRA_DETAIL, movie)
             context.startActivity(intent)
         }

@@ -23,8 +23,8 @@ class FavoriteInteractorImpl(private val favoriteDao: FavoriteDao) :
         return favoriteDao.getFavoriteCursor()
     }
 
-    override fun getByIdCursor(id: Int): Cursor {
-        return favoriteDao.getByIdCursor(id)
+    override fun getFavByIdCursor(id: Int): Cursor {
+        return favoriteDao.getFavByIdCursor(id)
     }
 
     override fun insertFavorite(movieTv: MovieTv) {

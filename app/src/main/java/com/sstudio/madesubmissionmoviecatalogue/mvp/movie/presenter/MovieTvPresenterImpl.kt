@@ -2,10 +2,13 @@ package com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter
 
 import android.content.Context
 import android.content.res.Configuration
+import android.database.Cursor
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
 import com.sstudio.madesubmissionmoviecatalogue.R
+import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb
+import com.sstudio.madesubmissionmoviecatalogue.helper.MappingHelper
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.model.MoviesResponse
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.FavoriteInteractor
@@ -81,6 +84,23 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
                 movieTvView.broadcastIntent()
             }
         })
+    }
+
+    override fun loadFavoriteProvider(): Cursor? {
+        return context.contentResolver.query(FavoriteDb.CONTENT_URI, null, null, null, null)
+    }
+
+    override fun favoriteToListProvider(cursor: Cursor, isMovie: Boolean) {
+        val listNotes = MappingHelper.mapCursorToArrayList(cursor)
+        val list = ArrayList<MovieTv>()
+        for (movieTv in listNotes) {
+            if (isMovie && movieTv.isMovie == 1) {
+                list.add(movieTv)
+            } else if (!isMovie && movieTv.isMovie == 0) {
+                list.add(movieTv)
+            }
+        }
+        movieTvView.showMoviesTv(list)
     }
 
     override fun loadFavorite(isMovie: Boolean) {

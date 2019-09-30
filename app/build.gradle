@@ -9,7 +9,7 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.sstudio.madesubmissionmoviecatalogue"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -17,7 +17,8 @@ android {
         buildConfigField "String", "YOUTUBE", "\"https://youtube.com/watch?v=\""
         buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
         buildConfigField "String", "TMDB_API_KEY", "\"a65ec405c3a90543b914c39e1a1faa00\""
-        buildConfigField "String", "POSTER", "\"https://image.tmdb.org/t/p/w500\""
+        buildConfigField "String", "POSTER_LIST", "\"https://image.tmdb.org/t/p/w154\""
+        buildConfigField "String", "POSTER_DETAIL", "\"https://image.tmdb.org/t/p/w342\""
         multiDexEnabled true
     }
     buildTypes {

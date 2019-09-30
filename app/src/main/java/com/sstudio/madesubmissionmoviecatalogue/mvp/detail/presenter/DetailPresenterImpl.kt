@@ -3,11 +3,17 @@ package com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
+import android.database.Cursor
+import android.net.Uri
+import android.os.AsyncTask
 import android.util.Log
 import com.sstudio.madesubmissionmoviecatalogue.FavoriteWidget
 import com.sstudio.madesubmissionmoviecatalogue.R
+import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb
+import com.sstudio.madesubmissionmoviecatalogue.helper.MappingHelper
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.DetailView
+import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter.MovieTvPresenter
 import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,6 +21,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.movie_wrapper.*
+import java.lang.ref.WeakReference
+import java.util.ArrayList
 
 class DetailPresenterImpl(
     private val context: Context,
@@ -41,18 +49,27 @@ class DetailPresenterImpl(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     //set favorite button
-                    if (it.isNotEmpty()) {
-                        isShowFavorite = true
-                        detailView.isShowFavorite(R.drawable.ic_favorite_pink_24dp)
-                    } else {
-                        isShowFavorite = false
-                        detailView.isShowFavorite(R.drawable.ic_favorite_white_24dp)
-                    }
+
 
                 }, {
                     detailView.toast("${context.getString(R.string.error_data)} ${it?.message}")
                 })
         )
+    }
+
+    override fun loadFavoriteProvider(id: Int, uri: Uri): Cursor? {
+        return context.contentResolver.query(uri, null, null, null, null)
+    }
+
+    override fun setFavButton(cursor: Cursor) {
+        val listNotes = MappingHelper.mapCursorToArrayList(cursor)
+        if (listNotes.isNotEmpty()) {
+            isShowFavorite = true
+            detailView.isShowFavorite(R.drawable.ic_favorite_pink_24dp)
+        } else {
+            isShowFavorite = false
+            detailView.isShowFavorite(R.drawable.ic_favorite_white_24dp)
+        }
     }
 
     override fun addFavorite(movieTv: MovieTv) {

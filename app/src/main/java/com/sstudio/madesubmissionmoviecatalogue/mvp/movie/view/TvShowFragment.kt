@@ -34,7 +34,7 @@ import kotlinx.android.synthetic.main.fragment_tvshow.view.*
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
-class TvShowFragment : Fragment(), MovieTvView, LoadMoviesCallback {
+class TvShowFragment : Fragment(), MovieTvView {
 
     private lateinit var movieTvAdapter: MovieTvAdapter
     private lateinit var mView: View
@@ -53,7 +53,7 @@ class TvShowFragment : Fragment(), MovieTvView, LoadMoviesCallback {
         handlerThread.start()
         val handler = Handler(handlerThread.looper)
         context?.let {
-            myObserver = DataObserver(handler, it)
+            myObserver = DataObserver(handler, movieTvPresenter)
             it.contentResolver?.registerContentObserver(CONTENT_URI, true, myObserver)
         }
     }
@@ -118,7 +118,7 @@ class TvShowFragment : Fragment(), MovieTvView, LoadMoviesCallback {
             movieTvPresenter.loadTvShow()
         } else if (viewModel.tvShowFavorite == null && isShowFavorite) {
 //            movieTvPresenter.loadFavorite(false)
-            context?.let { LoadFavoriteAsync(it, this).execute() }
+            context?.let { LoadFavoriteAsync(movieTvPresenter).execute() }
         } else if (isShowFavorite) {
             showMoviesTv(viewModel.tvShowFavorite)
         } else {
@@ -132,7 +132,7 @@ class TvShowFragment : Fragment(), MovieTvView, LoadMoviesCallback {
             init()
             if (isShowFavorite) {
 //            movieTvPresenter.loadFavorite(false)
-                context?.let { LoadFavoriteAsync(it, this).execute() }
+                context?.let { LoadFavoriteAsync(movieTvPresenter).execute() }
             } else {
                 movieTvPresenter.loadTvShow()
             }
@@ -199,44 +199,19 @@ class TvShowFragment : Fragment(), MovieTvView, LoadMoviesCallback {
         movieTvPresenter.dumpData()
     }
 
-    override fun preExecute() {
-        progressVisible()
-    }
-
-    override fun postExecute(favorite: Cursor) {
-        val listNotes = MappingHelper.mapCursorToArrayList(favorite)
-        if (listNotes.size > 0) {
-            movieTvAdapter.setListNotes(listNotes)
-        } else {
-            movieTvAdapter.setListNotes(ArrayList())
-//            showSnackbarMessage("Tidak ada data saat ini")
-        }
-        progressGone()
-    }
-
     internal class LoadFavoriteAsync internal constructor(
-        mContext: Context,
-        callback: LoadMoviesCallback
+        movieTvPresenter: MovieTvPresenter
     ) : AsyncTask<Void, Void, Cursor>() {
 
-        private val weakContext: WeakReference<Context> = WeakReference(mContext)
-        private val weakCallback: WeakReference<LoadMoviesCallback> = WeakReference(callback)
-
-        override fun onPreExecute() {
-            super.onPreExecute()
-            weakCallback.get()?.preExecute()
-        }
+        private val weakCallback = WeakReference(movieTvPresenter)
 
         override fun doInBackground(vararg p0: Void?): Cursor? {
-            val context = weakContext.get()
-
-            return context?.contentResolver?.query(CONTENT_URI, null, null, null, null)
+            return weakCallback.get()?.loadFavoriteProvider()
         }
 
         override fun onPostExecute(result: Cursor?) {
             super.onPostExecute(result)
-            Log.d("mytag", "post $result")
-            result?.let { weakCallback.get()?.postExecute(it) };
+            result?.let { weakCallback.get()?.favoriteToListProvider(result, false) }
         }
     }
 
@@ -257,11 +232,11 @@ class TvShowFragment : Fragment(), MovieTvView, LoadMoviesCallback {
         mView.loading_progress.visibility = View.GONE
     }
 
-    class DataObserver(handler: Handler, internal val context: Context) : ContentObserver(handler) {
+    class DataObserver(handler: Handler, private val movieTvPresenter: MovieTvPresenter) : ContentObserver(handler) {
 
         override fun onChange(selfChange: Boolean) {
             super.onChange(selfChange)
-            LoadFavoriteAsync(context, context as LoadMoviesCallback).execute()
+            LoadFavoriteAsync(movieTvPresenter).execute()
 
         }
     }

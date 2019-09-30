@@ -22,11 +22,8 @@ class MappingHelper {
             val notesList = ArrayList<MovieTv>()
 
             while (notesCursor.moveToNext()) {
-                Log.d("mytag", "while true")
-//                if (notesCursor.)
                 val posterPath =
                     notesCursor.getString(notesCursor.getColumnIndexOrThrow(COLUMN_POSTERPATH))
-
                 val overview =
                     notesCursor.getString(notesCursor.getColumnIndexOrThrow(COLUMN_OVERVIEW))
                 val releaseDate =
