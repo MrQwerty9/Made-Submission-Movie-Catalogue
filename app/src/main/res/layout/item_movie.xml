@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_item_movie"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginEnd="30dp"
+    android:layout_marginStart="30dp"
     android:orientation="vertical"
-    android:paddingEnd="10dp"
     android:paddingStart="10dp"
-    android:paddingRight="10dp"
-    android:paddingLeft="10dp"
+    android:paddingEnd="10dp"
     app:cardCornerRadius="8dp">
 
     <RelativeLayout
@@ -18,9 +19,9 @@
 
         <ImageView
             android:id="@+id/img_poster"
-            android:contentDescription="@string/image_poster"
             android:layout_width="100dp"
             android:layout_height="150dp"
+            android:contentDescription="@string/txt_image_poster"
             android:scaleType="fitXY" />
 
         <TextView
@@ -28,26 +29,48 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="26dp"
-            android:layout_marginLeft="26dp"
+            android:layout_marginTop="15dp"
             android:layout_toEndOf="@id/img_poster"
-            android:layout_toRightOf="@id/img_poster"
             android:text="@string/title_movie"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txt_overview"
+            android:id="@+id/txt_release_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txt_title"
             android:layout_marginStart="26dp"
-            android:layout_marginLeft="26dp"
+            android:layout_toEndOf="@id/img_poster"
+            android:text="@string/txt_release_date"
+            android:textSize="10sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/txt_overview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_release_date"
+            android:layout_marginStart="26dp"
             android:layout_marginTop="10dp"
-            android:layout_toRightOf="@id/img_poster"
+            android:layout_marginEnd="@dimen/margin"
+            android:textSize="12sp"
+            android:textColor="@color/greyLight"
+            android:layout_toEndOf="@id/img_poster"
             android:ellipsize="end"
             android:maxLines="3"
-            android:text="@string/lorem"
-            android:layout_toEndOf="@id/img_poster" />
+            android:text="@string/lorem" />
+
+        <TextView
+            android:id="@+id/tv_rating_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="-15dp"
+            android:layout_toEndOf="@id/img_poster"
+            tools:text="6.5"
+            android:background="@drawable/oval"/>
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

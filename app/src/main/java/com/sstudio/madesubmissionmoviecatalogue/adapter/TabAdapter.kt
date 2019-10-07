@@ -1,11 +1,14 @@
-package com.sstudio.madesubmissionmoviecatalogue
+package com.sstudio.madesubmissionmoviecatalogue.adapter
 
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.sstudio.madesubmissionmoviecatalogue.R
+import com.sstudio.madesubmissionmoviecatalogue.mvp.view.MovieFragment
+import com.sstudio.madesubmissionmoviecatalogue.mvp.view.TvShowFragment
 
-class FragmentAdapter(fm: FragmentManager, private val context: Context): FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class TabAdapter(fm: FragmentManager, private val context: Context): FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     companion object {
        const val PAGE_COUNT = 2

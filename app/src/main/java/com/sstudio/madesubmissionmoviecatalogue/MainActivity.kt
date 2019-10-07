@@ -9,6 +9,7 @@ import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import com.google.android.material.tabs.TabLayout
+import com.sstudio.madesubmissionmoviecatalogue.adapter.TabAdapter
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,8 +26,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupViewPager(viewPager: ViewPager) {
-        val adapter = FragmentAdapter(supportFragmentManager, this)
-        viewPager.offscreenPageLimit = FragmentAdapter.PAGE_COUNT
+        val adapter = TabAdapter(
+            supportFragmentManager,
+            this
+        )
+        viewPager.offscreenPageLimit = TabAdapter.PAGE_COUNT
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_layout))
         viewPager.adapter = adapter
     }
