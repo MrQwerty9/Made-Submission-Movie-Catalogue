@@ -1,38 +1,42 @@
 package com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view
 
+import android.app.ActivityOptions
+import android.app.SearchManager
 import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
+import android.database.ContentObserver
+import android.database.Cursor
 import android.net.ConnectivityManager
-import android.os.Bundle
+import android.net.Uri
+import android.os.*
 import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.sstudio.madesubmissionmoviecatalogue.App
-import com.sstudio.madesubmissionmoviecatalogue.MyReceiver
-import com.sstudio.madesubmissionmoviecatalogue.R
+import com.sstudio.madesubmissionmoviecatalogue.*
 import com.sstudio.madesubmissionmoviecatalogue.adapter.MovieTvAdapter
+import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
+import com.sstudio.madesubmissionmoviecatalogue.mvp.FavoriteAsyncCallback
+import com.sstudio.madesubmissionmoviecatalogue.mvp.MainActivity
+import com.sstudio.madesubmissionmoviecatalogue.mvp.MovieClickAnim
+import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.DetailActivity
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter.MovieTvPresenter
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter.MovieTvPresenterImpl
 import kotlinx.android.synthetic.main.fragment_movie.view.*
-import javax.inject.Inject
-import com.sstudio.madesubmissionmoviecatalogue.mvp.MainActivity
-import android.app.SearchManager
-import android.content.Context
-import android.database.ContentObserver
-import android.database.Cursor
-import android.os.AsyncTask
-import android.os.Handler
-import android.os.HandlerThread
-import androidx.appcompat.widget.SearchView
-import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
 
-class MovieFragment : Fragment(), MovieTvView {
+class MovieFragment : Fragment(), MovieTvView,
+    FavoriteAsyncCallback,
+    MovieClickAnim {
 
     private lateinit var movieTvAdapter: MovieTvAdapter
     private lateinit var mView: View
@@ -40,9 +44,12 @@ class MovieFragment : Fragment(), MovieTvView {
     lateinit var movieTvPresenter: MovieTvPresenter
     private lateinit var viewModel: MovieTvPresenterImpl
     private var myReceiver: BroadcastReceiver? = null
-    private var isShowFavorite = false
-    private lateinit var myObserver: MovieFragment.DataObserver
+    private lateinit var myObserver: DataObserver
     private lateinit var handlerThread: HandlerThread
+
+    companion object {
+        var isShowFavorite = false
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +63,7 @@ class MovieFragment : Fragment(), MovieTvView {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        myReceiver = MyReceiver()
+        myReceiver = NetworkReceiver()
         mView = inflater.inflate(R.layout.fragment_movie, container, false)
         init()
         mView.swipe_refresh.setOnRefreshListener(movieRefresh)
@@ -67,9 +74,7 @@ class MovieFragment : Fragment(), MovieTvView {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager?
-
-
-        if (searchManager != null) {
+        if (searchManager != null && !isShowFavorite) {
             val searchView = menu.findItem(R.id.search).actionView as SearchView
             searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
             searchView.queryHint = resources.getString(R.string.search)
@@ -97,7 +102,7 @@ class MovieFragment : Fragment(), MovieTvView {
             (parentFragment as FavoriteFragment?) != null
         progressVisible()
         activity?.let {
-            movieTvAdapter = MovieTvAdapter(it, true)
+            movieTvAdapter = MovieTvAdapter(it, true, this)
         }
         setViewModel()
         mView.rv_list_movie.adapter = movieTvAdapter
@@ -108,8 +113,8 @@ class MovieFragment : Fragment(), MovieTvView {
         handlerThread = HandlerThread("DataObserver")
         handlerThread.start()
         val handler = Handler(handlerThread.looper)
+        myObserver = DataObserver(handler, this)
         context?.let {
-            myObserver = DataObserver(handler, movieTvPresenter)
             it.contentResolver?.registerContentObserver(FavoriteDb.CONTENT_URI, true, myObserver)
         }
     }
@@ -121,7 +126,7 @@ class MovieFragment : Fragment(), MovieTvView {
             movieTvPresenter.loadMovie()
         } else if (viewModel.moviesFavorite == null && isShowFavorite) {
 //            movieTvPresenter.loadFavorite(true)
-            context?.let { MovieFragment.LoadFavoriteAsync(movieTvPresenter).execute() }
+            context?.let { LoadFavoriteAsync(this).execute() }
 
         } else if (isShowFavorite) {
             showMoviesTv(viewModel.moviesFavorite)
@@ -136,14 +141,35 @@ class MovieFragment : Fragment(), MovieTvView {
             init()
             if (isShowFavorite) {
 //                movieTvPresenter.loadFavorite(true)
-                context?.let { MovieFragment.LoadFavoriteAsync(movieTvPresenter).execute() }
+                context?.let { LoadFavoriteAsync(this).execute() }
             } else {
                 movieTvPresenter.loadMovie()
             }
         }
 
+    override fun onMovieClick(movie: MovieTv, movieImageView: ImageView) {
+        val intent = Intent(context, DetailActivity::class.java)
+        val uri =
+            Uri.parse("${FavoriteDb.CONTENT_URI}/" + movie.id)
+        intent.data = uri
+        intent.putExtra(DetailActivity.EXTRA_DETAIL, movie)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val options = ActivityOptions.makeSceneTransitionAnimation(
+                activity,
+                movieImageView, "sharedName"
+            )
+            startActivity(intent, options.toBundle())
+        } else {
+            startActivity(intent)
+        }
+    }
+
     override fun showMoviesTv(moviesTv: List<MovieTv>?) {
+
         moviesTv?.let {
+            if (it.isEmpty()){
+                toast(context?.getString(R.string.empty_text))
+            }
             movieTvAdapter.movieTv = it as ArrayList<MovieTv>
             if (isShowFavorite) {
                 viewModel.moviesFavorite = it
@@ -195,22 +221,6 @@ class MovieFragment : Fragment(), MovieTvView {
         }
     }
 
-    internal class LoadFavoriteAsync internal constructor(
-        movieTvPresenter: MovieTvPresenter
-    ) : AsyncTask<Void, Void, Cursor>() {
-
-        private val weakCallback = WeakReference(movieTvPresenter)
-
-        override fun doInBackground(vararg p0: Void?): Cursor? {
-            return weakCallback.get()?.loadFavoriteProvider()
-        }
-
-        override fun onPostExecute(result: Cursor?) {
-            super.onPostExecute(result)
-            result?.let { weakCallback.get()?.showFavoriteProvider(it, true) }
-        }
-    }
-
     private fun toast(text: String?) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
@@ -227,12 +237,40 @@ class MovieFragment : Fragment(), MovieTvView {
         mView.loading_progress.visibility = View.GONE
     }
 
-    class DataObserver(handler: Handler, private val movieTvPresenter: MovieTvPresenter) : ContentObserver(handler) {
+    override fun doInBackground(): Cursor? {
+        return movieTvPresenter.loadFavoriteProvider()
+    }
+
+    override fun onPostExecute(cursor: Cursor?) {
+        if (isShowFavorite) {
+            cursor?.let { movieTvPresenter.showFavoriteProvider(it, true) }
+        }
+    }
+
+    internal class LoadFavoriteAsync internal constructor(
+        favoriteAsyncCallback: FavoriteAsyncCallback
+    ) : AsyncTask<Void, Void, Cursor>() {
+
+        private val weakCallback = WeakReference(favoriteAsyncCallback)
+
+        override fun doInBackground(vararg p0: Void?): Cursor? {
+            return weakCallback.get()?.doInBackground()
+        }
+
+        override fun onPostExecute(result: Cursor?) {
+            super.onPostExecute(result)
+
+                result?.let { weakCallback.get()?.onPostExecute(result) }
+
+        }
+    }
+
+    class DataObserver(handler: Handler, private val movieFragment: MovieFragment) :
+        ContentObserver(handler) {
 
         override fun onChange(selfChange: Boolean) {
             super.onChange(selfChange)
-            MovieFragment.LoadFavoriteAsync(movieTvPresenter).execute()
-
+            LoadFavoriteAsync(movieFragment as FavoriteAsyncCallback).execute()
         }
     }
 }

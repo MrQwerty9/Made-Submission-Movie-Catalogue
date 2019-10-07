@@ -10,21 +10,20 @@
     <string name="txt_image_poster">image poster</string>
     <string name="txt_release_date">17 Agusus 2019</string>
     <string name="language">en-US</string>
-    <string name="label_release_date">Release Date</string>
-    <string name="label_rating">Rating</string>
-    <string name="rating">%s (%s votes)</string>
     <string name="wifi_enable">Wifi enabled</string>
     <string name="data_enable">Mobile data enabled</string>
     <string name="no_internet">No internet is available</string>
     <string name="error_data">Error fetching data:</string>
+
     <string name="favorite_added">successfully added to favorites</string>
     <string name="favorite_removed">successfully removed from favorites</string>
-    <string name="appwidget_text">STAR WARS BANNER</string>
+    <string name="appwidget_text">My Favorite Movies</string>
     <string name="empty_text">NO DATA</string>
     <string name="search">Search</string>
     <string name="content_title">Content title</string>
     <string name="content_text">Content text</string>
     <string name="subtext">Sub text</string>
+    <string name="cast">Cast</string>
 
     <string name="msg_daily_reminder">Hello!</string>
     <string name="msg_daily_reminder_content">We miss you, come and see the new movies!</string>
@@ -34,4 +33,7 @@
     <string name="msg_released_unset"> Today\'s release reminder is unset.</string>
     <string name="msg_daily_set"> Daily Reminder is set.</string>
     <string name="msg_daily_unset"> Daily Reminder is unset.</string>
+
+    <string name="msg_no_video">The video could not be found</string>
+    <string name="msg_no_description">There is no description for this language</string>
 </resources>

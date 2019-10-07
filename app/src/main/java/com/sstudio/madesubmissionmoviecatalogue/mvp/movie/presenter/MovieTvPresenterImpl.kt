@@ -3,9 +3,7 @@ package com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter
 import android.content.Context
 import android.content.res.Configuration
 import android.database.Cursor
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb
 import com.sstudio.madesubmissionmoviecatalogue.helper.MappingHelper
@@ -13,9 +11,6 @@ import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.model.MoviesResponse
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.FavoriteInteractor
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view.MovieTvView
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,7 +40,6 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
 
     override fun loadMovie() {
         val call = movieTvInteractor.getPopularMovies(
-            BuildConfig.TMDB_API_KEY,
             context.getString(R.string.language)
         )
         call.enqueue(object : Callback<MoviesResponse> {
@@ -66,7 +60,6 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
 
     override fun loadTvShow() {
         val call = movieTvInteractor.getPopularTv(
-            BuildConfig.TMDB_API_KEY,
             context.getString(R.string.language)
         )
         call.enqueue(object : Callback<MoviesResponse> {
@@ -104,7 +97,7 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
 
     override fun findMovies(query: String) {
         val call = movieTvInteractor.findMovie(
-            BuildConfig.TMDB_API_KEY,
+            
             context.getString(R.string.language),
             query
         )
@@ -126,7 +119,7 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
 
     override fun findTv(query: String) {
         val call = movieTvInteractor.findTv(
-            BuildConfig.TMDB_API_KEY,
+            
             context.getString(R.string.language),
             query
         )

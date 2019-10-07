@@ -10,16 +10,13 @@
     <string name="txt_release_date">17 Agusus 2019</string>
     <string name="language">id</string>
     <public name="appbar_scrolling_view_behavior" type="string"/>
-    <string name="label_release_date">Tanggal Rilis</string>
-    <string name="label_rating">Penilaian</string>
-    <string name="rating">%s (%s suara)</string>
     <string name="wifi_enable">Wifi aktif</string>
     <string name="data_enable">Mobile data aktif</string>
     <string name="no_internet">Tidak ada internet</string>
     <string name="error_data">Kesalahan mengambil data:</string>
     <string name="favorite_added">berhasil ditambahkan ke favorit</string>
     <string name="favorite_removed">berhasil dihapus dari favorit</string>
-    <string name="appwidget_text">STAR WARS BANNER</string>
+    <string name="appwidget_text">Film Favoritku</string>
     <string name="empty_text">DATA TIDAK ADA</string>
     <string name="search">Cari</string>
     <string name="content_title">Content title</string>
@@ -34,4 +31,8 @@
     <string name="msg_released_unset"> Pengingat rilis hari ini tidak diatur.</string>
     <string name="msg_daily_set"> Pengingat harian telah diatur.</string>
     <string name="msg_daily_unset"> Pengingat harian tidak diatur.</string>
+
+    <string name="cast">Pemeran</string>
+    <string name="msg_no_video">Video tidak ditemukan</string>
+    <string name="msg_no_description">Tidak ada deskripsi untuk bahasa ini</string>
 </resources>

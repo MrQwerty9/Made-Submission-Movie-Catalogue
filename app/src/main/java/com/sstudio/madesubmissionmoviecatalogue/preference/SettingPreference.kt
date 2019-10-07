@@ -1,4 +1,4 @@
-package com.sstudio.madesubmissionmoviecatalogue
+package com.sstudio.madesubmissionmoviecatalogue.preference
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
+import com.sstudio.madesubmissionmoviecatalogue.reminder.AlarmReceiver
+import com.sstudio.madesubmissionmoviecatalogue.R
 
 class SettingPreference: PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -36,7 +38,7 @@ class SettingPreference: PreferenceFragmentCompat(),
                         )
                         showToast(context, context.getString(R.string.msg_daily_set))
                     } else{
-                        alarmReceiver.cancelAlarm(context)
+                        alarmReceiver.cancelAlarm(context, alarmReceiver.ID_DAILY)
                         showToast(context, context.getString(R.string.msg_daily_unset))
                     }
                 }
@@ -45,12 +47,12 @@ class SettingPreference: PreferenceFragmentCompat(),
                     if (it.getBoolean(RELEASE_KEY, false)) {
                         alarmReceiver.setReminder(
                             context,
-                            "20:52",
+                            "08:00",
                             AlarmReceiver.TYPE_RELEASE
                         )
                         showToast(context, context.getString(R.string.msg_released_set))
                     } else{
-                        alarmReceiver.cancelAlarm(context)
+                        alarmReceiver.cancelAlarm(context, alarmReceiver.ID_RELEASE)
                         showToast(context, context.getString(R.string.msg_released_unset))
                     }
                 }

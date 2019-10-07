@@ -6,7 +6,7 @@ import android.content.Intent
 import android.widget.Toast
 import com.sstudio.madesubmissionmoviecatalogue.util.NetworkUtil
 
-class MyReceiver : BroadcastReceiver() {
+class NetworkReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         var status = NetworkUtil.getConnectivityStatusString(context)

@@ -1,8 +1,6 @@
 package com.sstudio.madesubmissionmoviecatalogue.adapter
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
+import com.sstudio.madesubmissionmoviecatalogue.mvp.MovieClickAnim
 import com.sstudio.madesubmissionmoviecatalogue.R
-import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb.Companion.CONTENT_URI
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
-import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.DetailActivity
 import kotlinx.android.synthetic.main.item_movie.view.*
 
 
-class MovieTvAdapter(private val context: Context, private val isMovie: Boolean) :
+class MovieTvAdapter(private val context: Context, private val isMovie: Boolean, private val movieClickAnim: MovieClickAnim) :
     RecyclerView.Adapter<MovieTvAdapter.ViewHolder>() {
 
     var movieTv = ArrayList<MovieTv>()
@@ -53,13 +50,9 @@ class MovieTvAdapter(private val context: Context, private val isMovie: Boolean)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(R.drawable.ic_cloud_download_grey_24dp)
             .into(holder.imgPoster)
+        holder.txtRating.text = movie.voteAverage.toString()
         holder.cardMovie.setOnClickListener {
-            val intent = Intent(context, DetailActivity::class.java)
-            val uri =
-                Uri.parse("$CONTENT_URI/" + movieTv[position].id)
-            intent.data = uri
-            intent.putExtra(DetailActivity.EXTRA_DETAIL, movie)
-            context.startActivity(intent)
+            movieClickAnim.onMovieClick(movieTv[position], holder.imgPoster)
         }
     }
 
@@ -69,6 +62,7 @@ class MovieTvAdapter(private val context: Context, private val isMovie: Boolean)
         val imgPoster: ImageView = view.img_poster
         val cardMovie: CardView = view.cv_item_movie
         val txtReleaseDate: TextView = view.txt_release_date
+        val txtRating: TextView = view.tv_rating_item
     }
 
 }

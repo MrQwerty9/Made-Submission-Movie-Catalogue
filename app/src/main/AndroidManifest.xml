@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme"
         android:largeHeap="true">
         <activity
-            android:name=".ReminderActivity"
+            android:name=".reminder.ReminderActivity"
             android:parentActivityName=".mvp.MainActivity"></activity>
         <activity
             android:name=".mvp.detail.DetailActivity"
@@ -34,15 +34,15 @@
             android:readPermission="com.sstudio.madesubmissionmoviecatalogue.READ_DATABASE"
             android:writePermission="com.sstudio.madesubmissionmoviecatalogue.WRITE_DATABASE" />
         <receiver
-            android:name=".MyReceiver"
+            android:name=".NetworkReceiver"
             android:enabled="true"
             android:exported="true" />
         <receiver
-            android:name=".AlarmReceiver"
+            android:name=".reminder.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
 
-        <receiver android:name=".FavoriteWidget">
+        <receiver android:name=".widget.FavoriteWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -52,7 +52,7 @@
                 android:resource="@xml/favorite_widget_info" />
         </receiver>
         <service
-            android:name=".StackWidgetService"
+            android:name=".widget.StackWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 

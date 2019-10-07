@@ -1,4 +1,4 @@
-package com.sstudio.madesubmissionmoviecatalogue
+package com.sstudio.madesubmissionmoviecatalogue.widget
 
 import android.content.Intent
 import android.widget.RemoteViewsService

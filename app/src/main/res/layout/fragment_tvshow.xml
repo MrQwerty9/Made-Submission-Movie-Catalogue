@@ -10,6 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/colorPrimaryDark" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="-20dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="-20dp"
+            android:background="@drawable/curve_bg" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_list_tv_show"
             android:layout_width="match_parent"

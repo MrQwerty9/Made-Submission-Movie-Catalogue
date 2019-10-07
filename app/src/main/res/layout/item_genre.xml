@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="5dp"
+    android:foreground="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/genre_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Comedy"
+        android:textSize="12sp"
+        android:textColor="@color/whiteGrey"
+        android:paddingStart="9dp"
+        android:paddingEnd="2dp"
+        android:background="@drawable/border_left"/>
+
+</FrameLayout>

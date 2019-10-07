@@ -1,19 +1,21 @@
-package com.sstudio.madesubmissionmoviecatalogue
+package com.sstudio.madesubmissionmoviecatalogue.widget
 
 import android.content.Context
-import android.widget.RemoteViews
-import android.widget.RemoteViewsService
-import android.graphics.Bitmap
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
+import android.widget.RemoteViews
+import android.widget.RemoteViewsService
 import androidx.core.net.toUri
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.FutureTarget
+import com.sstudio.madesubmissionmoviecatalogue.App
+import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
+import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.FavoriteInteractor
 import javax.inject.Inject
-import kotlin.collections.ArrayList
-import com.bumptech.glide.request.FutureTarget
-import com.bumptech.glide.Glide
 
 
 class StackRemoteViewsFactory(private val context: Context) :
@@ -38,7 +40,6 @@ class StackRemoteViewsFactory(private val context: Context) :
     }
 
     override fun onDataSetChanged() {
-        Log.d("mytag", "moviepresenter ${favoriteInteractor.getFavoriteSync()}")
         movies = favoriteInteractor.getFavoriteSync()
         setBitmap(movies)
     }
@@ -48,11 +49,18 @@ class StackRemoteViewsFactory(private val context: Context) :
     }
 
     override fun getViewAt(position: Int): RemoteViews {
-        val remoteViews = RemoteViews(context.packageName, R.layout.widget_item)
+        val remoteViews = RemoteViews(context.packageName,
+            R.layout.widget_item
+        )
         remoteViews.setImageViewBitmap(R.id.imageView, items[position])
+//        remoteViews.setBundle(R.id.imageView, "name", movies.tob)
+//        val intent = Intent(context, )
+//        remoteViews.setOnClickPendingIntent()
 
         val bundle = Bundle()
-        bundle.putInt(FavoriteWidget.EXTRA_ITEM, position)
+//        bundle.putInt(FavoriteWidget.EXTRA_ITEM, 999)
+//        val moviesParcel = favoriteInteractor.getFavoriteSync()
+        bundle.putInt(FavoriteWidget.EXTRA_ITEM, movies[position].id)
 
         val fillIntent = Intent()
         fillIntent.putExtras(bundle)

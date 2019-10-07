@@ -1,46 +1,32 @@
 package com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter
 
-import android.appwidget.AppWidgetManager
-import android.content.ComponentName
-import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
-import android.os.AsyncTask
-import android.util.Log
-import com.sstudio.madesubmissionmoviecatalogue.FavoriteWidget
 import com.sstudio.madesubmissionmoviecatalogue.R
-import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb.Companion.CONTENT_URI
 import com.sstudio.madesubmissionmoviecatalogue.helper.MappingHelper
+import com.sstudio.madesubmissionmoviecatalogue.model.CastResponse
+import com.sstudio.madesubmissionmoviecatalogue.model.Detail
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
+import com.sstudio.madesubmissionmoviecatalogue.model.VideoResponse
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.DetailView
-import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter.MovieTvPresenter
-import io.reactivex.Completable
-import io.reactivex.CompletableObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.movie_wrapper.*
-import java.lang.ref.WeakReference
-import java.util.ArrayList
+import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.presenter.MovieTvInteractor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DetailPresenterImpl(
     private val context: Context,
     private val detailView: DetailView,
-    private val favoriteInteractor: FavoriteInteractor
+    private val movieTvInteractor: MovieTvInteractor
 ) : DetailPresenter {
-
-    private val disposable = CompositeDisposable()
     private var isShowFavorite = false
 
     override fun favoriteClick(movieTv: MovieTv, uri: Uri) {
         if (isShowFavorite) {
-//            removeFavorite(movieTv.id)
             removeFavoriteProvider(uri)
         } else {
-//            addFavorite(movieTv)
             addFavoriteProvider(movieTv)
         }
     }
@@ -65,38 +51,64 @@ class DetailPresenterImpl(
         context.contentResolver.insert(CONTENT_URI, values)
     }
 
-    override fun removeFavorite(id: Int) {
-        Completable.fromAction {
-            favoriteInteractor.removeFavorite(id)
-        }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(object :
-            CompletableObserver {
-            override fun onComplete() {
-                detailView.toast("${context.getString(R.string.favorite_removed)} ")
-                widgetNotifChanged()
-            }
-
-            override fun onSubscribe(d: Disposable) {
-
-            }
-
-            override fun onError(e: Throwable) {
-                detailView.toast("${e.message}")
-            }
-        })
-    }
-
     override fun removeFavoriteProvider(uri: Uri) {
         context.contentResolver.delete(uri, null, null)
     }
 
-    override fun dumpData() {
-        disposable.dispose()
+    override fun getMovieDetail(id: Int, isMovie: Int) {
+        val call = movieTvInteractor.getMovieTvDetail(
+            id, isMovie, context.getString(R.string.language)
+        )
+        call.enqueue(object : Callback<Detail> {
+            override fun onResponse(
+                call: Call<Detail>,
+                response: Response<Detail>
+            ) {
+                detailView.showAdditionalDetails(response.body(), null, null)
+            }
+
+            override fun onFailure(call: Call<Detail>, t: Throwable?) {
+                detailView.toast("${context.getString(R.string.error_data)} ${t?.message}")
+                detailView.broadcastIntent()
+            }
+        })
     }
 
-    private fun widgetNotifChanged(){
-        val appWidgetManager = AppWidgetManager.getInstance(context)
-        val component = ComponentName(context, FavoriteWidget::class.java)
-        val appWidgetId = appWidgetManager.getAppWidgetIds(component)
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.stack_view)
+    override fun getMovieCredits(id: Int, isMovie: Int) {
+        val call = movieTvInteractor.getMovieTvCredits(
+            id, isMovie, context.getString(R.string.language)
+        )
+        call.enqueue(object : Callback<CastResponse> {
+            override fun onResponse(
+                call: Call<CastResponse>,
+                response: Response<CastResponse>
+            ) {
+                detailView.showAdditionalDetails(null, response.body(),  null)
+            }
+
+            override fun onFailure(call: Call<CastResponse>, t: Throwable?) {
+                detailView.toast("${context.getString(R.string.error_data)} ${t?.message}")
+                detailView.broadcastIntent()
+            }
+        })
+    }
+
+    override fun getMovieVideo(id: Int, isMovie: Int) {
+        val call = movieTvInteractor.getMovieTvVideo(
+            id, isMovie, context.getString(R.string.language)
+        )
+        call.enqueue(object : Callback<VideoResponse> {
+            override fun onResponse(
+                call: Call<VideoResponse>,
+                response: Response<VideoResponse>
+            ) {
+                detailView.showAdditionalDetails(null, null, response.body())
+            }
+
+            override fun onFailure(call: Call<VideoResponse>, t: Throwable?) {
+                detailView.toast("${context.getString(R.string.error_data)} ${t?.message}")
+                detailView.broadcastIntent()
+            }
+        })
     }
 }

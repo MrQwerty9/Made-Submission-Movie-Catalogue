@@ -1,9 +1,7 @@
 package com.sstudio.madesubmissionmoviecatalogue.model
 
 import android.content.ContentValues
-import android.database.Cursor
 import android.os.Parcelable
-import android.provider.BaseColumns
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -16,7 +14,7 @@ import kotlinx.android.parcel.Parcelize
 data class MovieTv(
     @ColumnInfo(name = COLUMN_POSTERPATH)
     @SerializedName("poster_path")
-    var posterPath: String = "",
+    var posterPath: String? = "",
 
     @ColumnInfo(name = COLUMN_OVERVIEW)
     @SerializedName("overview")

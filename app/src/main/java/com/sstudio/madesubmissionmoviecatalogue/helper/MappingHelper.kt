@@ -2,8 +2,6 @@ package com.sstudio.madesubmissionmoviecatalogue.helper
 
 import android.content.ContentValues
 import android.database.Cursor
-import android.provider.BaseColumns._ID
-import android.util.Log
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv.Companion.COLUMN_FIRSTAIRDATE
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv.Companion.COLUMN_GENRE
