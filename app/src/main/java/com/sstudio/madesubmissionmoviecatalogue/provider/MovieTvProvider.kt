@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Handler
 import android.widget.Toast
 import com.sstudio.madesubmissionmoviecatalogue.App
-import com.sstudio.madesubmissionmoviecatalogue.widget.FavoriteWidget
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb.Companion.AUTHORITY
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb.Companion.CONTENT_URI
@@ -15,6 +14,7 @@ import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv.Companion.TABLE_NAME
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.DetailActivity
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.FavoriteInteractor
+import com.sstudio.madesubmissionmoviecatalogue.widget.FavoriteWidget
 import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -36,6 +36,7 @@ class MovieTvProvider : ContentProvider() {
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
+        initInject()
         var added: Long = 0
         when (sUriMatcher.match(uri)) {
             NOTE -> {

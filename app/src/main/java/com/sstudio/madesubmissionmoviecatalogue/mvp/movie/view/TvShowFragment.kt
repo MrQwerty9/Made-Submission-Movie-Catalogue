@@ -19,7 +19,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.sstudio.madesubmissionmoviecatalogue.*
+import com.sstudio.madesubmissionmoviecatalogue.App
+import com.sstudio.madesubmissionmoviecatalogue.NetworkReceiver
+import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.adapter.MovieTvAdapter
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb.Companion.CONTENT_URI
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
@@ -214,7 +216,9 @@ class TvShowFragment : Fragment(), MovieTvView,
     }
 
     private fun toast(text: String?) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+        text?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun notifChanged() {

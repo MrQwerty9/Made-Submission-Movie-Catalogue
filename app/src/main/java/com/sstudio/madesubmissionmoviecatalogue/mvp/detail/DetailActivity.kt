@@ -20,7 +20,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.appbar.AppBarLayout
-import com.sstudio.madesubmissionmoviecatalogue.*
+import com.sstudio.madesubmissionmoviecatalogue.App
+import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
+import com.sstudio.madesubmissionmoviecatalogue.NetworkReceiver
+import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.adapter.CastAdapter
 import com.sstudio.madesubmissionmoviecatalogue.adapter.GenreAdapter
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb

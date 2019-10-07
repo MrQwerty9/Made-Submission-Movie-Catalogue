@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
-import com.sstudio.madesubmissionmoviecatalogue.mvp.MovieClickAnim
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
+import com.sstudio.madesubmissionmoviecatalogue.mvp.MovieClickAnim
 import kotlinx.android.synthetic.main.item_movie.view.*
 
 

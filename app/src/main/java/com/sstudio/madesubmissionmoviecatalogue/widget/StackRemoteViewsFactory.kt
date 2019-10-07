@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.core.net.toUri
@@ -15,6 +14,17 @@ import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.FavoriteInteractor
+import com.sstudio.madesubmissionmoviecatalogue.widget.FavoriteWidget.Companion.EXTRA_FIRST_AIR
+import com.sstudio.madesubmissionmoviecatalogue.widget.FavoriteWidget.Companion.EXTRA_GENRE
+import com.sstudio.madesubmissionmoviecatalogue.widget.FavoriteWidget.Companion.EXTRA_ID
+import com.sstudio.madesubmissionmoviecatalogue.widget.FavoriteWidget.Companion.EXTRA_ISMOVIE
+import com.sstudio.madesubmissionmoviecatalogue.widget.FavoriteWidget.Companion.EXTRA_NAME
+import com.sstudio.madesubmissionmoviecatalogue.widget.FavoriteWidget.Companion.EXTRA_OVERVIEW
+import com.sstudio.madesubmissionmoviecatalogue.widget.FavoriteWidget.Companion.EXTRA_POSTER
+import com.sstudio.madesubmissionmoviecatalogue.widget.FavoriteWidget.Companion.EXTRA_RELEASE
+import com.sstudio.madesubmissionmoviecatalogue.widget.FavoriteWidget.Companion.EXTRA_TITLE
+import com.sstudio.madesubmissionmoviecatalogue.widget.FavoriteWidget.Companion.EXTRA_VOTE_AVR
+import com.sstudio.madesubmissionmoviecatalogue.widget.FavoriteWidget.Companion.EXTRA_VOTE_CNT
 import javax.inject.Inject
 
 
@@ -52,19 +62,13 @@ class StackRemoteViewsFactory(private val context: Context) :
         val remoteViews = RemoteViews(context.packageName,
             R.layout.widget_item
         )
-        remoteViews.setImageViewBitmap(R.id.imageView, items[position])
-//        remoteViews.setBundle(R.id.imageView, "name", movies.tob)
-//        val intent = Intent(context, )
-//        remoteViews.setOnClickPendingIntent()
-
         val bundle = Bundle()
-//        bundle.putInt(FavoriteWidget.EXTRA_ITEM, 999)
-//        val moviesParcel = favoriteInteractor.getFavoriteSync()
-        bundle.putInt(FavoriteWidget.EXTRA_ITEM, movies[position].id)
-
+        if (items.size > 0) {
+            remoteViews.setImageViewBitmap(R.id.imageView, items[position])
+            putData(bundle, position)
+        }
         val fillIntent = Intent()
         fillIntent.putExtras(bundle)
-
         remoteViews.setOnClickFillInIntent(R.id.imageView, fillIntent)
         return remoteViews
     }
@@ -79,6 +83,20 @@ class StackRemoteViewsFactory(private val context: Context) :
 
     override fun onDestroy() {
 
+    }
+
+    private fun putData(bundle: Bundle, position: Int) {
+        bundle.putString(EXTRA_POSTER, movies[position].posterPath)
+        bundle.putString(EXTRA_OVERVIEW, movies[position].overview)
+        bundle.putString(EXTRA_RELEASE, movies[position].releaseDate)
+        bundle.putInt(EXTRA_ID, movies[position].id)
+        bundle.putString(EXTRA_TITLE, movies[position].title)
+        bundle.putDouble(EXTRA_VOTE_AVR, movies[position].voteAverage)
+        bundle.putInt(EXTRA_VOTE_CNT, movies[position].voteCount)
+        bundle.putString(EXTRA_NAME, movies[position].name)
+        bundle.putString(EXTRA_FIRST_AIR, movies[position].firstAirDate)
+        bundle.putString(EXTRA_GENRE, movies[position].genre)
+        bundle.putInt(EXTRA_ISMOVIE, movies[position].isMovie)
     }
 
     private fun setBitmap(list: List<MovieTv>) {

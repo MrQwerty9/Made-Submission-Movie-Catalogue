@@ -4,7 +4,7 @@ import androidx.multidex.MultiDexApplication
 import com.sstudio.madesubmissionmoviecatalogue.data.api.ApiModule
 import com.sstudio.madesubmissionmoviecatalogue.data.api.NetworkModule
 import com.sstudio.madesubmissionmoviecatalogue.data.local.RoomModule
-import com.sstudio.madesubmissionmoviecatalogue.di.*
+import com.sstudio.madesubmissionmoviecatalogue.di.AppModule
 import com.sstudio.madesubmissionmoviecatalogue.di.component.*
 import com.sstudio.madesubmissionmoviecatalogue.di.module.DetailModule
 import com.sstudio.madesubmissionmoviecatalogue.di.module.InteractorModule

@@ -1,7 +1,7 @@
 package com.sstudio.madesubmissionmoviecatalogue.reminder
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.preference.SettingPreference
 import kotlinx.android.synthetic.main.activity_reminder.*

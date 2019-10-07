@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
-import com.sstudio.madesubmissionmoviecatalogue.reminder.AlarmReceiver
 import com.sstudio.madesubmissionmoviecatalogue.R
+import com.sstudio.madesubmissionmoviecatalogue.reminder.AlarmReceiver
 
 class SettingPreference: PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {

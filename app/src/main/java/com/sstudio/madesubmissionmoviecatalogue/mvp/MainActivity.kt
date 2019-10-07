@@ -8,12 +8,12 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view.FavoriteFragment
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view.MovieFragment
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view.TvShowFragment
-import kotlinx.android.synthetic.main.activity_main.*
-import com.sstudio.madesubmissionmoviecatalogue.*
 import com.sstudio.madesubmissionmoviecatalogue.reminder.ReminderActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(){
