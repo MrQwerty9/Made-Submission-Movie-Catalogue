@@ -2,6 +2,7 @@ package com.sstudio.madesubmissionmoviecatalogue.mvp.detail
 
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -23,7 +24,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
 
     @Inject
     lateinit var detailPresenter: DetailPresenter
-    private lateinit var movieTv: MovieTv
+    private var movieTv: MovieTv? = null
 
     companion object {
         const val EXTRA_DETAIL = "extra_detail"
@@ -39,21 +40,21 @@ class DetailActivity : AppCompatActivity(), DetailView {
     }
 
     private val favoriteOnClick = View.OnClickListener {
-        detailPresenter.favoriteClick(movieTv)
+        movieTv?.let { it1 -> detailPresenter.favoriteClick(it1) }
     }
 
     private fun showMovieDetail() {
         movieTv = intent.getParcelableExtra(EXTRA_DETAIL)
-        val poster = (BuildConfig.POSTER + movieTv.posterPath).toUri()
+        val poster = Uri.parse(BuildConfig.POSTER + movieTv?.posterPath)
         val rating =
             String.format(
                 resources.getString(R.string.rating),
-                movieTv.voteAverage.toString(),
-                movieTv.voteCount.toString()
+                movieTv?.voteAverage.toString(),
+                movieTv?.voteCount.toString()
             )
-        detailPresenter.loadFavorite(movieTv.id)
+        movieTv?.id?.let { detailPresenter.loadFavorite(it) }
         progressVisible()
-        txt_overview.text = movieTv.overview
+        txt_overview.text = movieTv?.overview
         txt_rating.text = rating
         Glide.with(this)
             .load(poster)
@@ -61,12 +62,12 @@ class DetailActivity : AppCompatActivity(), DetailView {
             .fitCenter()
             .placeholder(R.drawable.ic_cloud_download_grey_24dp)
             .into(img_poster)
-        if (movieTv.isMovie == 1) {
-            collapsingToolbar.title = movieTv.title
-            txt_release_date.text = movieTv.releaseDate
+        if (movieTv?.isMovie == 1) {
+            collapsingToolbar.title = movieTv?.title
+            txt_release_date.text = movieTv?.releaseDate
         } else {
-            collapsingToolbar.title = movieTv.name
-            txt_release_date.text = movieTv.firstAirDate
+            collapsingToolbar.title = movieTv?.name
+            txt_release_date.text = movieTv?.firstAirDate
         }
         progressGone()
     }

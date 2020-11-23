@@ -5,6 +5,7 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import android.graphics.Bitmap
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.core.net.toUri
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
@@ -78,7 +79,7 @@ class StackRemoteViewsFactory(private val context: Context) :
         for (i in 0 until list.size) {
             val futureBitmap: FutureTarget<Bitmap>  = Glide.with(context)
                 .asBitmap()
-                .load((BuildConfig.POSTER + list[i].posterPath).toUri())
+                .load(Uri.parse(BuildConfig.POSTER + list[i].posterPath))
                 .submit()
             items.add(futureBitmap.get())
         }

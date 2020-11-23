@@ -42,9 +42,9 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         (context.applicationContext as App).createInteractorComponent().inject(this)
         val type = intent.getStringExtra(EXTRA_TYPE)
-        val message = intent.getStringExtra(EXTRA_MESSAGE)
+        val message = intent.getStringExtra(EXTRA_MESSAGE).toString()
 
-        val title = intent.getStringExtra(EXTRA_TITLE)
+        val title = intent.getStringExtra(EXTRA_TITLE).toString()
         val notifId = intent.getStringExtra(EXTRA_MESSAGE)
 
 //        showToast(context, title, message)
