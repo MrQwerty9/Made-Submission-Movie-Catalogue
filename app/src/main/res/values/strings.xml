@@ -36,4 +36,11 @@
 
     <string name="msg_no_video">The video could not be found</string>
     <string name="msg_no_description">There is no description for this language</string>
+
+    <string name="sort_now_playing">Now Playing</string>
+    <string name="sort_popular">Popular</string>
+    <string name="sort_top_rated">Top Rated</string>
+    <string name="sort_upcoming">Upcoming</string>
+    <string name="sort_genre">Genre</string>
+    <string name="sort_indonesian">Indonesian</string>
 </resources>

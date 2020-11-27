@@ -11,6 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view.FavoriteFragment
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view.MovieFragment
+import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view.MovieHomeFragment
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view.TvShowFragment
 import com.sstudio.madesubmissionmoviecatalogue.reminder.ReminderActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,7 +32,6 @@ class MainActivity : AppCompatActivity(){
         if (savedInstanceState == null){
             bottom_nav.selectedItemId = R.id.navigation_movie
         }
-
 
     }
 
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(){
                     R.id.navigation_movie -> {
 
                         fragment =
-                            MovieFragment()
+                            MovieHomeFragment()
                         supportFragmentManager.beginTransaction()
                             .replace(
                                 R.id.layout_container,

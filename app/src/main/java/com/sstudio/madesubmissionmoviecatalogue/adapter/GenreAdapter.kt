@@ -5,12 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sstudio.madesubmissionmoviecatalogue.R
-import com.sstudio.madesubmissionmoviecatalogue.model.Genre
+import com.sstudio.madesubmissionmoviecatalogue.model.Genres
 import kotlinx.android.synthetic.main.item_genre.view.*
 import java.util.*
 
 class GenreAdapter : RecyclerView.Adapter<GenreAdapter.ViewHolder>(){
-    private var genres: List<Genre> = ArrayList()
+    private var genres: List<Genres.Genre> = ArrayList()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(genres[position])
@@ -25,7 +25,7 @@ class GenreAdapter : RecyclerView.Adapter<GenreAdapter.ViewHolder>(){
         return ViewHolder(root)
     }
 
-    fun addGenre(genres: List<Genre>?) {
+    fun addGenre(genres: List<Genres.Genre>?) {
         if (genres != null) {
             this.genres = genres
             notifyDataSetChanged()
@@ -33,8 +33,8 @@ class GenreAdapter : RecyclerView.Adapter<GenreAdapter.ViewHolder>(){
     }
 
     inner class ViewHolder(root: View) : RecyclerView.ViewHolder(root) {
-        fun bind(genre: Genre) = with(itemView) {
-            genre_name?.text = genre.name
+        fun bind(genres: Genres.Genre) = with(itemView) {
+            genre_name?.text = genres.name
         }
     }
 }

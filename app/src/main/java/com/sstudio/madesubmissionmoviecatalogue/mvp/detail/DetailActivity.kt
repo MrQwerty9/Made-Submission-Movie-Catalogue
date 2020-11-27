@@ -96,7 +96,8 @@ class DetailActivity : AppCompatActivity(), DetailView,
     }
 
     private fun showMovieDetail() {
-        movieTv = intent.getParcelableExtra(EXTRA_DETAIL)
+        movieTv = intent.getParcelableExtra<MovieTv>(EXTRA_DETAIL) as MovieTv
+
 
         if (movieTv.releaseDate != ""){
             movieTv.isMovie = 1

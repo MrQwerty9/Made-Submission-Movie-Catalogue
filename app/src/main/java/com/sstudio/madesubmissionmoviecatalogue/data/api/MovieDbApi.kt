@@ -1,9 +1,6 @@
 package com.sstudio.madesubmissionmoviecatalogue.data.api
 
-import com.sstudio.madesubmissionmoviecatalogue.model.CastResponse
-import com.sstudio.madesubmissionmoviecatalogue.model.Detail
-import com.sstudio.madesubmissionmoviecatalogue.model.MoviesResponse
-import com.sstudio.madesubmissionmoviecatalogue.model.VideoResponse
+import com.sstudio.madesubmissionmoviecatalogue.model.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -11,11 +8,40 @@ import retrofit2.http.Query
 
 interface MovieDbApi {
 
+    @GET("movie/now_playing")
+    fun getNowPlayingMovies(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String
+    ): Call<MoviesResponse>
+
     @GET("movie/popular")
     fun getPopularMovies(
         @Query("api_key") apiKey: String,
         @Query("language") language: String
     ): Call<MoviesResponse>
+
+    @GET("movie/top_rated")
+    fun getTopRatedMovies(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String
+    ): Call<MoviesResponse>
+
+    @GET("movie/upcoming")
+    fun getUpcomingMovies(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String
+    ): Call<MoviesResponse>
+
+    @GET("discover/movie")
+    fun getDiscoverMovies(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("sort_by") sortBy: String,
+        @Query("page") page: Int,
+        @Query("with_genres") genre: String,
+        @Query("with_original_language") oriLanguage: String
+    ): Call<MoviesResponse>
+
 
     @GET("search/movie")
     fun findMovies(
@@ -68,4 +94,16 @@ interface MovieDbApi {
         @Query("api_key") apiKey: String,
         @Query("language") language: String
     ): Call<VideoResponse>
+
+    @GET("genre/movie/list")
+    fun getMovieGenreList(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String
+    ): Call<Genres>
+
+    @GET("genre/tv/list")
+    fun getTvGenreList(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String
+    ): Call<Genres>
 }

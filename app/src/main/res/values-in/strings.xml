@@ -35,4 +35,11 @@
     <string name="cast">Pemeran</string>
     <string name="msg_no_video">Video tidak ditemukan</string>
     <string name="msg_no_description">Tidak ada deskripsi untuk bahasa ini</string>
+
+    <string name="sort_now_playing">Sedang Tayang</string>
+    <string name="sort_popular">Populer</string>
+    <string name="sort_top_rated">Peringkat Teratas</string>
+    <string name="sort_upcoming">Akan Datang</string>
+    <string name="sort_genre">Genre</string>
+    <string name="sort_indonesian">Indonesia</string>
 </resources>

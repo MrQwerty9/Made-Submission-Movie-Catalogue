@@ -25,6 +25,8 @@ import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.adapter.MovieTvAdapter
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb.Companion.CONTENT_URI
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
+import com.sstudio.madesubmissionmoviecatalogue.model.MovieTvHome
+import com.sstudio.madesubmissionmoviecatalogue.model.MoviesResponse
 import com.sstudio.madesubmissionmoviecatalogue.mvp.FavoriteAsyncCallback
 import com.sstudio.madesubmissionmoviecatalogue.mvp.MainActivity
 import com.sstudio.madesubmissionmoviecatalogue.mvp.MovieClickAnim
@@ -93,7 +95,7 @@ class TvShowFragment : Fragment(), MovieTvView,
                 override fun onQueryTextChange(newText: String): Boolean {
                     if (newText.isEmpty()) {
                         progressVisible()
-                        movieTvPresenter.loadTvShow()
+                        movieTvPresenter.loadTvShow(MovieTvPresenterImpl.POPULAR)
                     }
                     return true
                 }
@@ -116,7 +118,7 @@ class TvShowFragment : Fragment(), MovieTvView,
         viewModel = ViewModelProviders.of(this)
             .get(MovieTvPresenterImpl::class.java)
         if (viewModel.tvShow == null && !isShowFavorite) {
-            movieTvPresenter.loadTvShow()
+            movieTvPresenter.loadTvShow(MovieTvPresenterImpl.POPULAR)
         } else if (viewModel.tvShowFavorite == null && isShowFavorite) {
 //            movieTvPresenter.loadFavorite(false)
             context?.let { LoadFavoriteAsync(this).execute() }
@@ -135,7 +137,7 @@ class TvShowFragment : Fragment(), MovieTvView,
 //            movieTvPresenter.loadFavorite(false)
                 context?.let { LoadFavoriteAsync(this).execute() }
             } else {
-                movieTvPresenter.loadTvShow()
+                movieTvPresenter.loadTvShow(MovieTvPresenterImpl.POPULAR)
             }
         }
 
@@ -154,6 +156,10 @@ class TvShowFragment : Fragment(), MovieTvView,
         } else {
             startActivity(intent)
         }
+    }
+
+    override fun showMoviesTvHome(moviesTv: List<MovieTvHome>?) {
+
     }
 
     override fun showMoviesTv(moviesTv: List<MovieTv>?) {

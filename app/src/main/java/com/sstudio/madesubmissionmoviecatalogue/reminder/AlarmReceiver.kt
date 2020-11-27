@@ -63,7 +63,6 @@ class AlarmReceiver : BroadcastReceiver() {
     private fun getReleaseToday(context: Context, title: String?, message: String?) {
         val today = SimpleDateFormat(FORMAT_DATE).format(Date())
         val call = movieTvInteractor.getMovieRelease(
-            context.getString(R.string.language),
             today,
             today
         )

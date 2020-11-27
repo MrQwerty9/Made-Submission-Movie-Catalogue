@@ -56,9 +56,7 @@ class DetailPresenterImpl(
     }
 
     override fun getMovieDetail(id: Int, isMovie: Int) {
-        val call = movieTvInteractor.getMovieTvDetail(
-            id, isMovie, context.getString(R.string.language)
-        )
+        val call = movieTvInteractor.getMovieTvDetail(id, isMovie)
         call.enqueue(object : Callback<Detail> {
             override fun onResponse(
                 call: Call<Detail>,
@@ -75,9 +73,7 @@ class DetailPresenterImpl(
     }
 
     override fun getMovieCredits(id: Int, isMovie: Int) {
-        val call = movieTvInteractor.getMovieTvCredits(
-            id, isMovie, context.getString(R.string.language)
-        )
+        val call = movieTvInteractor.getMovieTvCredits(id, isMovie)
         call.enqueue(object : Callback<CastResponse> {
             override fun onResponse(
                 call: Call<CastResponse>,
@@ -94,9 +90,7 @@ class DetailPresenterImpl(
     }
 
     override fun getMovieVideo(id: Int, isMovie: Int) {
-        val call = movieTvInteractor.getMovieTvVideo(
-            id, isMovie, context.getString(R.string.language)
-        )
+        val call = movieTvInteractor.getMovieTvVideo(id, isMovie)
         call.enqueue(object : Callback<VideoResponse> {
             override fun onResponse(
                 call: Call<VideoResponse>,

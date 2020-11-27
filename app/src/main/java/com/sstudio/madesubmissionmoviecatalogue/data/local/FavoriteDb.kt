@@ -10,7 +10,7 @@ import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv.Companion.TABLE_NA
 abstract class FavoriteDb : RoomDatabase() {
 
     companion object {
-        const val DB_VERSION = 3
+        const val DB_VERSION = 1
         const val DB_NAME = "favoriteDb"
         const val AUTHORITY = "com.sstudio.madesubmissionmoviecatalogue"
         private val SCHEME = "content"
