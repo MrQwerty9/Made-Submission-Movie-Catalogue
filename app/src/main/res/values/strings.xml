@@ -43,4 +43,8 @@
     <string name="sort_upcoming">Upcoming</string>
     <string name="sort_genre">Genre</string>
     <string name="sort_indonesian">Indonesian</string>
+
+    <string name="see_all">See All ></string>
+    <string name="region">Region</string>
+    <string name="all">All</string>
 </resources>

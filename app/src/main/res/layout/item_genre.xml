@@ -12,9 +12,11 @@
         android:layout_height="wrap_content"
         tools:text="Comedy"
         android:textSize="12sp"
-        android:textColor="@color/whiteGrey"
-        android:paddingStart="9dp"
-        android:paddingEnd="2dp"
-        android:background="@drawable/border_left"/>
+        android:textColor="@color/defaultBg"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:paddingBottom="1dp"
+        android:paddingTop="1dp"
+        android:background="@drawable/genre_unselect"/>
 
 </FrameLayout>

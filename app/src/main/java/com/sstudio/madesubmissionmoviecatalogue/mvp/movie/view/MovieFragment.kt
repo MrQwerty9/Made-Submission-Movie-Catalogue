@@ -20,13 +20,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sstudio.madesubmissionmoviecatalogue.App
+import com.sstudio.madesubmissionmoviecatalogue.Common
 import com.sstudio.madesubmissionmoviecatalogue.NetworkReceiver
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.adapter.MovieTvAdapter
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb
+import com.sstudio.madesubmissionmoviecatalogue.model.Genres
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTvHome
-import com.sstudio.madesubmissionmoviecatalogue.model.MoviesResponse
 import com.sstudio.madesubmissionmoviecatalogue.mvp.FavoriteAsyncCallback
 import com.sstudio.madesubmissionmoviecatalogue.mvp.MainActivity
 import com.sstudio.madesubmissionmoviecatalogue.mvp.MovieClickAnim
@@ -93,7 +94,7 @@ class MovieFragment : Fragment(), MovieTvView,
                 override fun onQueryTextChange(newText: String): Boolean {
                     if (newText.isEmpty()) {
                         progressVisible()
-                        movieTvPresenter.loadMovie(MovieTvPresenterImpl.POPULAR)
+                        movieTvPresenter.loadMovie(MovieTvPresenterImpl.POPULAR, 1, Common.genreSelected.id, Common.regionSelected)
                     }
                     return true
                 }
@@ -127,7 +128,7 @@ class MovieFragment : Fragment(), MovieTvView,
         viewModel = ViewModelProviders.of(this)
             .get(MovieTvPresenterImpl::class.java)
         if (viewModel.movies == null && !isShowFavorite) {
-            movieTvPresenter.loadMovie(MovieTvPresenterImpl.POPULAR)
+            movieTvPresenter.loadMovie(MovieTvPresenterImpl.POPULAR, 1, Common.genreSelected.id, Common.regionSelected)
         } else if (viewModel.moviesFavorite == null && isShowFavorite) {
 //            movieTvPresenter.loadFavorite(true)
             context?.let { LoadFavoriteAsync(this).execute() }
@@ -147,7 +148,7 @@ class MovieFragment : Fragment(), MovieTvView,
 //                movieTvPresenter.loadFavorite(true)
                 context?.let { LoadFavoriteAsync(this).execute() }
             } else {
-                movieTvPresenter.loadMovie(MovieTvPresenterImpl.POPULAR)
+                movieTvPresenter.loadMovie(MovieTvPresenterImpl.POPULAR, 1, Common.genreSelected.id, Common.regionSelected)
             }
         }
 
@@ -187,6 +188,10 @@ class MovieFragment : Fragment(), MovieTvView,
         }
         notifChanged()
         progressGone()
+    }
+
+    override fun showGenreList(genreList: List<Genres.Genre>?) {
+
     }
 
     override fun failShowMoviesTv(text: String?) {

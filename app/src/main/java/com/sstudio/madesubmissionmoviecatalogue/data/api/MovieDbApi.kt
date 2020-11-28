@@ -38,8 +38,12 @@ interface MovieDbApi {
         @Query("language") language: String,
         @Query("sort_by") sortBy: String,
         @Query("page") page: Int,
+        @Query("release_date.gte") dateGte: String,
+        @Query("release_date.lte") dateLte: String,
+        @Query("vote_count.gte") voteCountGte: Int,
+        @Query("with_cast") cast: String,
         @Query("with_genres") genre: String,
-        @Query("with_original_language") oriLanguage: String
+        @Query("with_original_language") region: String
     ): Call<MoviesResponse>
 
 

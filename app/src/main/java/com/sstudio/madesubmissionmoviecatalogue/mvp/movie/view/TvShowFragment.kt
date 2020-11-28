@@ -24,6 +24,7 @@ import com.sstudio.madesubmissionmoviecatalogue.NetworkReceiver
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.adapter.MovieTvAdapter
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb.Companion.CONTENT_URI
+import com.sstudio.madesubmissionmoviecatalogue.model.Genres
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTvHome
 import com.sstudio.madesubmissionmoviecatalogue.model.MoviesResponse
@@ -176,6 +177,10 @@ class TvShowFragment : Fragment(), MovieTvView,
         }
         notifChanged()
         progressGone()
+    }
+
+    override fun showGenreList(genreList: List<Genres.Genre>?) {
+
     }
 
     override fun spanCountGridLayout(i: Int) {

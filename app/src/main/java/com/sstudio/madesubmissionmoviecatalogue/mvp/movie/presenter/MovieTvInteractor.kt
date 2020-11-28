@@ -4,11 +4,11 @@ import com.sstudio.madesubmissionmoviecatalogue.model.*
 import retrofit2.Call
 
 interface MovieTvInteractor {
-    fun getNowPlayingMovies(page: Int, oriLanguage: String): Call<MoviesResponse>
-    fun getPopularMovies(page: Int, genre: String, oriLanguage: String): Call<MoviesResponse>
-    fun getTopRatedMovies(page: Int, genre: String, oriLanguage: String): Call<MoviesResponse>
-    fun getUpcomingMovies(page: Int, oriLanguage: String): Call<MoviesResponse>
-    fun getDiscoverMovies(sortBy: String, page: Int, genre: String, oriLanguage: String): Call<MoviesResponse>
+    fun getNowPlayingMovies(page: Int, genre: Int?, region: String): Call<MoviesResponse>
+    fun getPopularMovies(page: Int, genre: Int?, region: String): Call<MoviesResponse>
+    fun getTopRatedMovies(page: Int, genre: Int?, region: String): Call<MoviesResponse>
+    fun getUpcomingMovies(page: Int, genre: Int?, region: String): Call<MoviesResponse>
+    fun getDiscoverMovies(sortBy: String, page: Int, genre: Int?, region: String): Call<MoviesResponse>
     fun getPopularTv(): Call<MoviesResponse>
     fun findTv(query: String): Call<MoviesResponse>
     fun findMovie(query: String): Call<MoviesResponse>

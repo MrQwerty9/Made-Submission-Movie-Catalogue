@@ -46,22 +46,22 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
     }
 
     companion object{
-        val POPULAR = "popularity.asc"
+        val POPULAR = "popularity.desc"
         val NOW_PLAYING = "now_playing"
-        val TOP_RATED = "top_rated"
+        val TOP_RATED = "vote_average.desc"
         val UPCOMING = "upcoming"
         val BY_GENRE = "genre"
         val LOCAL = "local"
         val TOTAL_SHORT_BY = 4
-
     }
 
-    override fun loadMovieHome(genre: String, oriLanguage: String) {
+    override fun loadMovieHome(genre: Int?, region: String) {
         moviesHome = ArrayList()
+        getGenreMovie()
         repeat(TOTAL_SHORT_BY){ //initial array
             moviesHome?.add(MovieTvHome())
         }
-        getNowPlaying().enqueue(object : Callback<MoviesResponse> {
+        getNowPlaying(1, genre, region).enqueue(object : Callback<MoviesResponse> {
             override fun onResponse(
                 call: Call<MoviesResponse>,
                 response: Response<MoviesResponse>
@@ -79,7 +79,7 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
             }
         })
 
-        getPopular().enqueue(object : Callback<MoviesResponse> {
+        getPopular(1, genre, region).enqueue(object : Callback<MoviesResponse> {
             override fun onResponse(
                 call: Call<MoviesResponse>,
                 response: Response<MoviesResponse>
@@ -97,7 +97,7 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
             }
         })
 
-        getTopRated().enqueue(object : Callback<MoviesResponse> {
+        getTopRated(1, genre, region).enqueue(object : Callback<MoviesResponse> {
             override fun onResponse(
                 call: Call<MoviesResponse>,
                 response: Response<MoviesResponse>
@@ -115,7 +115,7 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
             }
         })
 
-        getUpComing().enqueue(object : Callback<MoviesResponse> {
+        getUpComing(1, genre, region).enqueue(object : Callback<MoviesResponse> {
             override fun onResponse(
                 call: Call<MoviesResponse>,
                 response: Response<MoviesResponse>
@@ -132,63 +132,21 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
                 movieTvView.broadcastIntent()
             }
         })
-
-        movieGenreList?.first()?.name?.let {
-            getByGenre(it).enqueue(object : Callback<MoviesResponse> {
-                override fun onResponse(
-                    call: Call<MoviesResponse>,
-                    response: Response<MoviesResponse>
-                ) {
-                    val movieTvHome = MovieTvHome()
-                    movieTvHome.title = context.getString(R.string.sort_genre)
-                    movieTvHome.movieTvHome = response.body()?.movieTv as ArrayList<MovieTv>
-//                    moviesHome?.set(4, movieTvHome)
-                    loadedMovieHome()
-                }
-
-                override fun onFailure(call: Call<MoviesResponse>, t: Throwable?) {
-                    movieTvView.failShowMoviesTv("${context.getString(R.string.error_data)} ${t?.message}")
-                    movieTvView.broadcastIntent()
-                }
-            })
-        }
-
-        getByLocal("id-ID").enqueue(object : Callback<MoviesResponse> {
-            override fun onResponse(
-                call: Call<MoviesResponse>,
-                response: Response<MoviesResponse>
-            ) {
-                val movieTvHome = MovieTvHome()
-                movieTvHome.title = context.getString(R.string.sort_indonesian)
-                movieTvHome.movieTvHome = response.body()?.movieTv as ArrayList<MovieTv>
-//                moviesHome?.set(5, movieTvHome)
-                loadedMovieHome()
-            }
-
-            override fun onFailure(call: Call<MoviesResponse>, t: Throwable?) {
-                movieTvView.failShowMoviesTv("${context.getString(R.string.error_data)} ${t?.message}")
-                movieTvView.broadcastIntent()
-            }
-        })
     }
 
-    override fun loadMovie(shortBy: String) {
-        val call: Call<MoviesResponse>
-        when (shortBy) {
+    override fun loadMovie(shortBy: String, page: Int, genre: Int?, region: String) {
+        val call: Call<MoviesResponse> = when (shortBy) {
             NOW_PLAYING -> {
-                call = getNowPlaying()
+                getNowPlaying(page, genre, region)
             }
             POPULAR -> {
-                call = getPopular()
+                getPopular(page, genre, region)
             }
             TOP_RATED -> {
-                call = getTopRated()
-            }
-            UPCOMING -> {
-                call = getUpComing()
+                getTopRated(page, genre, region)
             }
             else -> {
-                call = getByLocal("id-ID")
+                getUpComing(page, genre, region)
             }
         }
 
@@ -281,35 +239,41 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
         })
     }
 
+    override fun getGenreMovie(){
+        val call = movieTvInteractor.getMovieGenreList()
+        call.enqueue(object : Callback<Genres> {
+            override fun onResponse(
+                call: Call<Genres>,
+                response: Response<Genres>
+            ) {
+                Log.d("myTag genre", "response")
+                movieTvView.showGenreList(response.body()?.genres)
+            }
+
+            override fun onFailure(call: Call<Genres>, t: Throwable?) {
+                movieTvView.broadcastIntent()
+                Log.d("myTag genre", "failure")
+            }
+        })
+    }
+
+    override fun getGenreTv(){
+        val call = movieTvInteractor.getTvGenreList()
+        call.enqueue(object : Callback<Genres> {
+            override fun onResponse(
+                call: Call<Genres>,
+                response: Response<Genres>
+            ) {
+                movieTvView.showGenreList(response.body()?.genres)
+            }
+
+            override fun onFailure(call: Call<Genres>, t: Throwable?) {
+                movieTvView.broadcastIntent()
+            }
+        })
+    }
+
     override fun init() {
-        //getGenreList
-        var call = movieTvInteractor.getMovieGenreList()
-        call.enqueue(object : Callback<Genres> {
-            override fun onResponse(
-                call: Call<Genres>,
-                response: Response<Genres>
-            ) {
-                movieGenreList = response.body()?.genres
-            }
-
-            override fun onFailure(call: Call<Genres>, t: Throwable?) {
-                movieTvView.broadcastIntent()
-            }
-        })
-        call = movieTvInteractor.getTvGenreList()
-        call.enqueue(object : Callback<Genres> {
-            override fun onResponse(
-                call: Call<Genres>,
-                response: Response<Genres>
-            ) {
-                tvGenreList = response.body()?.genres
-            }
-
-            override fun onFailure(call: Call<Genres>, t: Throwable?) {
-                movieTvView.broadcastIntent()
-            }
-        })
-
         if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             movieTvView.spanCountGridLayout(1)
         } else {
@@ -323,31 +287,23 @@ class MovieTvPresenterImpl() : ViewModel(), MovieTvPresenter {
         }
     }
 
-    private fun getDiscoverMovie(sortBy: String, page: Int, genre: String, oriLanguage: String): Call<MoviesResponse>{
-        return movieTvInteractor.getDiscoverMovies(sortBy, page, genre, oriLanguage)
+    private fun getDiscoverMovie(sortBy: String, page: Int, genre: Int?, region: String): Call<MoviesResponse>{
+        return movieTvInteractor.getDiscoverMovies(sortBy, page, genre, region)
     }
 
-    private fun getNowPlaying(): Call<MoviesResponse>{
-        return movieTvInteractor.getNowPlayingMovies( 1, "")
+    private fun getNowPlaying(page: Int, genre: Int?, region: String): Call<MoviesResponse>{
+        return movieTvInteractor.getNowPlayingMovies(page, genre, region)
     }
 
-    private fun getPopular(): Call<MoviesResponse>{
-        return movieTvInteractor.getPopularMovies( 1, "", "")
+    private fun getPopular(page: Int, genre: Int?, region: String): Call<MoviesResponse>{
+        return movieTvInteractor.getPopularMovies(page, genre, region)
     }
 
-    private fun getTopRated(): Call<MoviesResponse>{
-        return movieTvInteractor.getTopRatedMovies( 1, "", "")
+    private fun getTopRated(page: Int, genre: Int?, region: String): Call<MoviesResponse>{
+        return movieTvInteractor.getTopRatedMovies(page, genre, region)
     }
 
-    private fun getUpComing(): Call<MoviesResponse>{
-        return movieTvInteractor.getUpcomingMovies( 1, "")
-    }
-
-    private fun getByGenre(genre: String): Call<MoviesResponse>{
-        return movieTvInteractor.getDiscoverMovies("", 1, genre, "")
-    }
-
-    private fun getByLocal(language: String): Call<MoviesResponse>{
-        return movieTvInteractor.getDiscoverMovies("", 1, "", language)
+    private fun getUpComing(page: Int, genre: Int?, region: String): Call<MoviesResponse>{
+        return movieTvInteractor.getUpcomingMovies(page, genre, region)
     }
 }

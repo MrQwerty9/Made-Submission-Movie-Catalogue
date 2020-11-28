@@ -86,8 +86,7 @@ class DetailActivity : AppCompatActivity(), DetailView,
         rv_genre.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rv_genre.layoutManager = layoutManager
-        rv_genre.setHasFixedSize(true)
-        rv_genre.adapter = GenreAdapter()
+        rv_genre.adapter = GenreAdapter(false, null)
 
         rv_cast.setHasFixedSize(true)
         rv_cast.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
