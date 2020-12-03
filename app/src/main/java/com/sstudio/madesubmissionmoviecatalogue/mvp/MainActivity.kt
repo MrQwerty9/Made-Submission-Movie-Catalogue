@@ -10,11 +10,12 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view.FavoriteFragment
-import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view.MovieFragment
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view.MovieHomeFragment
 import com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view.TvShowFragment
 import com.sstudio.madesubmissionmoviecatalogue.reminder.ReminderActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLEngine
 
 
 class MainActivity : AppCompatActivity(){
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity(){
             bottom_nav.selectedItemId = R.id.navigation_movie
         }
 
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -50,6 +52,19 @@ class MainActivity : AppCompatActivity(){
             startActivity(Intent(this, ReminderActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+//        val fm: FragmentManager = fragmentManager
+//        if (fm.backStackEntryCount > 0) {
+////            Log.i("MainActivity", "popping backstack")
+//            fm.popBackStack()
+//        } else {
+////            Log.i("MainActivity", "nothing on backstack, calling super")
+//            super.onBackPressed()
+//        }
+        super.onBackPressed()
+        fragmentManager.popBackStackImmediate()
     }
 
     private val mOnNavigationItemSelectedListener =

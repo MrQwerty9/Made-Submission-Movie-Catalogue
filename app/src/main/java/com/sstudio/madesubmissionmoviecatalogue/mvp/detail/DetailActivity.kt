@@ -8,29 +8,23 @@ import android.database.ContentObserver
 import android.database.Cursor
 import android.net.ConnectivityManager
 import android.net.Uri
-import android.os.AsyncTask
-import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
+import android.os.*
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.appbar.AppBarLayout
-import com.sstudio.madesubmissionmoviecatalogue.App
-import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
-import com.sstudio.madesubmissionmoviecatalogue.NetworkReceiver
-import com.sstudio.madesubmissionmoviecatalogue.R
+import com.sstudio.madesubmissionmoviecatalogue.*
 import com.sstudio.madesubmissionmoviecatalogue.adapter.CastAdapter
 import com.sstudio.madesubmissionmoviecatalogue.adapter.GenreAdapter
+import com.sstudio.madesubmissionmoviecatalogue.adapter.SimilarAdapter
+import com.sstudio.madesubmissionmoviecatalogue.adapter.VideoAdapter
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb
-import com.sstudio.madesubmissionmoviecatalogue.model.CastResponse
-import com.sstudio.madesubmissionmoviecatalogue.model.Detail
-import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
-import com.sstudio.madesubmissionmoviecatalogue.model.VideoResponse
+import com.sstudio.madesubmissionmoviecatalogue.model.*
 import com.sstudio.madesubmissionmoviecatalogue.mvp.FavoriteAsyncCallback
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.DetailPresenter
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -43,13 +37,17 @@ import javax.inject.Inject
 
 
 class DetailActivity : AppCompatActivity(), DetailView,
-    FavoriteAsyncCallback {
+    FavoriteAsyncCallback, SimilarAdapter.SimilarAdapterCallback,
+    VideoAdapter.VideoAdapterCallback {
 
     @Inject
     lateinit var detailPresenter: DetailPresenter
     private var myReceiver: BroadcastReceiver? = null
     private lateinit var myObserver: DataObserver
     private lateinit var handlerThread: HandlerThread
+    private lateinit var similarAdapter: SimilarAdapter
+    private lateinit var videoAdapter: VideoAdapter
+    private lateinit var actionBar: Toolbar
     private var uri: Uri? = null
     private var inc = 0
 
@@ -65,9 +63,10 @@ class DetailActivity : AppCompatActivity(), DetailView,
         (this.applicationContext as App).createFavoriteComponent(this).inject(this)
         setupToolbar()
         initLayout()
-        showMovieDetail()
+        showMovieDetail(null)
         btn_favorite.setOnClickListener(favoriteOnClick)
         myReceiver = NetworkReceiver()
+        Common.navigateDetail = ArrayList<MovieTv>()
     }
 
     private val favoriteOnClick = View.OnClickListener {
@@ -83,6 +82,11 @@ class DetailActivity : AppCompatActivity(), DetailView,
     }
 
     private fun initLayout() {
+
+        appbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
+        appbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
         rv_genre.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rv_genre.layoutManager = layoutManager
@@ -90,13 +94,20 @@ class DetailActivity : AppCompatActivity(), DetailView,
 
         rv_cast.setHasFixedSize(true)
         rv_cast.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_cast.setHasFixedSize(true)
         rv_cast.adapter = CastAdapter()
+        rv_similar.setHasFixedSize(true)
+        rv_similar.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        similarAdapter = SimilarAdapter(this)
+        rv_similar.adapter = similarAdapter
+
+        rv_trailer.setHasFixedSize(true)
+        rv_trailer.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        videoAdapter = VideoAdapter(this)
+        rv_trailer.adapter = videoAdapter
     }
 
-    private fun showMovieDetail() {
-        movieTv = intent.getParcelableExtra<MovieTv>(EXTRA_DETAIL) as MovieTv
-
+    private fun showMovieDetail(movieTvSimilar: MovieTv?) {
+        movieTv = movieTvSimilar ?: intent.getParcelableExtra<MovieTv>(EXTRA_DETAIL) as MovieTv
 
         if (movieTv.releaseDate != ""){
             movieTv.isMovie = 1
@@ -107,8 +118,10 @@ class DetailActivity : AppCompatActivity(), DetailView,
         detailPresenter.getMovieDetail(movieTv.id, movieTv.isMovie)
         detailPresenter.getMovieVideo(movieTv.id, movieTv.isMovie)
         detailPresenter.getMovieCredits(movieTv.id, movieTv.isMovie)
-        uri = intent.data
-        val uri = intent.data
+        detailPresenter.getMovieSimilar(movieTv.id, movieTv.isMovie)
+
+        val uri = Uri.parse("${FavoriteDb.CONTENT_URI}/" + movieTv.id)
+        this.uri = uri
         uri?.let { LoadFavoriteAsync(this).execute() }
         progressVisible()
         txt_rating.text = movieTv.voteAverage.toString()
@@ -131,17 +144,16 @@ class DetailActivity : AppCompatActivity(), DetailView,
     }
 
     override fun showAdditionalDetails(
-        detail: Detail?,
-        castResponse: CastResponse?,
-        videoResponse: VideoResponse?
+        detail: Detail,
+        castResponse: CastResponse,
+        videoResponse: VideoResponse, similarResponse: MoviesResponse
     ) {
-        detail?.let {
-            txt_overview.text =
-                if (it.overview != "") {
-                    it.overview
-                } else {
-                    getString(R.string.msg_no_description)
-                }
+        detail.let {
+            if (it.overview == "") {
+                detailPresenter.getOverviewEN(movieTv.id, movieTv.isMovie)
+            }else{
+                txt_overview.text = it.overview
+            }
             (rv_genre.adapter as GenreAdapter).addGenre(it.genres)
             Glide.with(this)
                 .load(BuildConfig.POSTER_DETAIL + it.backdropPath)
@@ -151,27 +163,27 @@ class DetailActivity : AppCompatActivity(), DetailView,
                 .placeholder(R.drawable.ic_cloud_download_grey_24dp)
                 .into(img_backdrop)
         }
-        castResponse?.let {
+        castResponse.let {
             (rv_cast.adapter as CastAdapter).addCast(it.cast)
         }
-        videoResponse?.let {response ->
-            btn_play.setOnClickListener {
+        videoResponse.let { response ->
                 if (response.video.isNotEmpty()) {
-                    val intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse(BuildConfig.YOUTUBE + response.video[0].key)
-                    )
-                    startActivity(intent)
+                    tv_trailer_label.visibility = View.VISIBLE
+                    videoAdapter.addVideo(response.video)
                 } else {
-                    toast(getString(R.string.msg_no_video))
+//                    toast(getString(R.string.msg_no_video))
+                    tv_trailer_label.visibility = View.GONE
                 }
-            }
+
         }
-        inc ++
-        if (inc >= 3) {
-            progressGone()
-            inc = 0
+
+        if (similarResponse.movieTv.isNotEmpty()){
+            tv_similar_label.visibility = View.VISIBLE
+            similarAdapter.addSimilar(similarResponse.movieTv)
+        }else{
+            tv_similar_label.visibility = View.GONE
         }
+        progressGone()
     }
 
     private fun setupToolbar() {
@@ -228,7 +240,11 @@ class DetailActivity : AppCompatActivity(), DetailView,
         cal.time = SimpleDateFormat("yyyy-MM-dd", Locale(getString(R.string.language)))
             .parse(date) as Date
         val mDate = cal.get(Calendar.DATE).toString()
-        val month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale(getString(R.string.language)))
+        val month = cal.getDisplayName(
+            Calendar.MONTH,
+            Calendar.LONG,
+            Locale(getString(R.string.language))
+        )
         val year = cal.get(Calendar.YEAR).toString()
 
         return "$mDate $month $year"
@@ -251,6 +267,14 @@ class DetailActivity : AppCompatActivity(), DetailView,
         } catch (e: IllegalArgumentException) {
             e.printStackTrace()
         }
+    }
+
+    override fun showOverviewEN(string: String) {
+        detailPresenter.postTranslate(string)
+    }
+
+    override fun showTranslate(text: String) {
+        Handler(Looper.getMainLooper()).post { txt_overview.text = text }
     }
 
     override fun doInBackground(): Cursor? {
@@ -286,5 +310,31 @@ class DetailActivity : AppCompatActivity(), DetailView,
             super.onChange(selfChange)
             LoadFavoriteAsync(context as FavoriteAsyncCallback).execute()
         }
+    }
+
+    override fun similarClicked(mMovieTv: MovieTv) {
+        Common.navigateDetail.add(movieTv) //add current movie tv
+        showMovieDetail(mMovieTv)
+        nested_detail.parent.requestChildFocus(nested_detail, nested_detail);
+        nested_detail.fullScroll(View.FOCUS_UP);
+        appbarLayout.setExpanded(true);
+    }
+
+    override fun onBackPressed() {
+        if (Common.navigateDetail.isNotEmpty()){
+            val last = Common.navigateDetail.size - 1
+            showMovieDetail(Common.navigateDetail[last])
+            Common.navigateDetail.removeAt(last)
+        }else{
+            super.onBackPressed()
+        }
+    }
+
+    override fun videoClicked(movieTv: Video) {
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse(BuildConfig.YOUTUBE + movieTv.key)
+        )
+        startActivity(intent)
     }
 }

@@ -4,11 +4,13 @@ import android.database.Cursor
 
 interface MovieTvPresenter {
     fun loadMovieHome(genre: Int?, region: String)
-    fun loadMovie(shortBy: String, page: Int, genre: Int?, region: String)
-    fun loadTvShow(shortBy: String)
+    fun loadTvHome(genre: Int?, region: String)
+    fun loadMovie(sortBy: String, page: Int, genre: Int?, region: String)
+    fun updateMoviePage(sortBy: String, page: Int, genre: Int?, region: String)
+    fun loadTvShow(sortBy: String, page: Int, genre: Int?, region: String)
     fun getGenreMovie()
     fun getGenreTv()
-    fun init()
+    fun setGridLayout()
     fun findMovies(query: String)
     fun findTv(query: String)
     fun loadFavoriteProvider(): Cursor?

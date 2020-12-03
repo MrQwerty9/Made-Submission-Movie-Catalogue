@@ -3,39 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="18dp"
     android:layout_marginTop="-6dp"
-    android:layout_marginEnd="18dp"
     app:cardElevation="0dp"
-    app:cardUseCompatPadding="true">
+    app:cardBackgroundColor="@color/defaultBg">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="19dp"
+        android:layout_marginEnd="19dp"
+        android:background="@color/white">
 
-        <TextView
-            android:id="@+id/txt_overview"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="@string/lorem"
-            android:textColor="@color/greyLight"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view"
-            app:layout_constraintVertical_bias="0.043" />
-
-        <TextView
-            android:id="@+id/tv_cast_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="@string/cast"
-            app:layout_constraintStart_toStartOf="@+id/txt_overview"
-            app:layout_constraintTop_toBottomOf="@+id/txt_overview" />
 
         <View
             android:id="@+id/view"
@@ -58,6 +40,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/txt_overview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/lorem"
+            android:textColor="@color/greyLight"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            app:layout_constraintVertical_bias="0.043" />
+
+        <TextView
+            android:id="@+id/tv_cast_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/cast"
+            android:textAllCaps="true"
+            app:layout_constraintStart_toStartOf="@+id/txt_overview"
+            app:layout_constraintTop_toBottomOf="@+id/txt_overview" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_cast"
             android:layout_width="0dp"
@@ -67,5 +74,46 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/tv_cast_label"
             app:layout_constraintTop_toBottomOf="@+id/tv_cast_label" />
+
+        <TextView
+            android:id="@+id/tv_trailer_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/trailer"
+            android:textAllCaps="true"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="@+id/txt_overview"
+            app:layout_constraintTop_toBottomOf="@+id/rv_cast" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_trailer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/txt_overview"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/tv_cast_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_trailer_label" />
+
+        <TextView
+            android:id="@+id/tv_similar_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/similar"
+            android:textAllCaps="true"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="@+id/txt_overview"
+            app:layout_constraintTop_toBottomOf="@+id/rv_trailer" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_similar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/txt_overview"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/tv_cast_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_similar_label" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.cardview.widget.CardView>

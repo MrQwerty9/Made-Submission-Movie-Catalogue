@@ -6,6 +6,7 @@
     android:fitsSystemWindows="true">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
@@ -68,6 +69,7 @@
                 android:id="@+id/appbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:titleTextColor="@color/grey"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways" />
 

@@ -1,6 +1,7 @@
 package com.sstudio.madesubmissionmoviecatalogue.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,11 @@ class MovieTvAdapter(private val context: Context, private val isMovie: Boolean,
     RecyclerView.Adapter<MovieTvAdapter.ViewHolder>() {
 
     var movieTv = ArrayList<MovieTv>()
+
+    fun updateMovieTv(movieTv: ArrayList<MovieTv>){
+        this.movieTv.addAll(movieTv)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false)

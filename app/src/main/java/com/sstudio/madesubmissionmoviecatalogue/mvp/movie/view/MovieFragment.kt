@@ -1,5 +1,6 @@
 package com.sstudio.madesubmissionmoviecatalogue.mvp.movie.view
 
+import android.R.attr.defaultValue
 import android.app.ActivityOptions
 import android.app.SearchManager
 import android.content.BroadcastReceiver
@@ -15,6 +16,7 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
@@ -51,9 +53,13 @@ class MovieFragment : Fragment(), MovieTvView,
     private var myReceiver: BroadcastReceiver? = null
     private lateinit var myObserver: DataObserver
     private lateinit var handlerThread: HandlerThread
+    private var filterSortBy = ""
+    private var filterQuery = ""
 
     companion object {
         var isShowFavorite = false
+        val SORT_BY_EXTRA = "SORT_BY_EXTRA"
+        val QUERY_EXTRA = "QUERY_EXTRA"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +76,9 @@ class MovieFragment : Fragment(), MovieTvView,
         setHasOptionsMenu(true)
         myReceiver = NetworkReceiver()
         mView = inflater.inflate(R.layout.fragment_movie, container, false)
-        init()
+        start()
         mView.swipe_refresh.setOnRefreshListener(movieRefresh)
-        movieTvPresenter.init()
+        movieTvPresenter.setGridLayout()
         return mView
     }
 
@@ -83,6 +89,13 @@ class MovieFragment : Fragment(), MovieTvView,
             val searchView = menu.findItem(R.id.search).actionView as SearchView
             searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
             searchView.queryHint = resources.getString(R.string.search)
+            searchView.onActionViewExpanded()
+            menu.findItem(R.id.search).expandActionView()
+
+            if (filterQuery != "") {
+                searchView.setQuery(filterQuery, false)
+                searchView.clearFocus()
+            }
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                 override fun onQueryTextSubmit(query: String): Boolean {
@@ -94,7 +107,12 @@ class MovieFragment : Fragment(), MovieTvView,
                 override fun onQueryTextChange(newText: String): Boolean {
                     if (newText.isEmpty()) {
                         progressVisible()
-                        movieTvPresenter.loadMovie(MovieTvPresenterImpl.POPULAR, 1, Common.genreSelected.id, Common.regionSelected)
+                        movieTvPresenter.loadMovie(
+                            filterSortBy,
+                            1,
+                            Common.genreSelected.id,
+                            Common.regionSelected
+                        )
                     }
                     return true
                 }
@@ -102,9 +120,23 @@ class MovieFragment : Fragment(), MovieTvView,
         }
     }
 
-    private fun init() {
-        isShowFavorite =
-            (parentFragment as FavoriteFragment?) != null
+    private fun filterFromParent(){
+        val bundle = this.arguments
+        val sortBy = bundle?.getString(SORT_BY_EXTRA, "")
+        val query = bundle?.getString(QUERY_EXTRA, "")
+
+        if (sortBy != ""){
+            filterSortBy = sortBy?: ""
+        }
+        else if (query != ""){
+            filterQuery = query?:""
+            movieTvPresenter.findMovies(query?:"")
+        }
+    }
+
+    private fun start() {
+        filterFromParent()
+        isShowFavorite = (parentFragment as FavoriteFragment?) != null
         progressVisible()
         activity?.let {
             movieTvAdapter = MovieTvAdapter(it, true, this)
@@ -128,7 +160,12 @@ class MovieFragment : Fragment(), MovieTvView,
         viewModel = ViewModelProviders.of(this)
             .get(MovieTvPresenterImpl::class.java)
         if (viewModel.movies == null && !isShowFavorite) {
-            movieTvPresenter.loadMovie(MovieTvPresenterImpl.POPULAR, 1, Common.genreSelected.id, Common.regionSelected)
+            movieTvPresenter.loadMovie(
+                filterSortBy,
+                1,
+                Common.genreSelected.id,
+                Common.regionSelected
+            )
         } else if (viewModel.moviesFavorite == null && isShowFavorite) {
 //            movieTvPresenter.loadFavorite(true)
             context?.let { LoadFavoriteAsync(this).execute() }
@@ -143,19 +180,23 @@ class MovieFragment : Fragment(), MovieTvView,
     private var movieRefresh: SwipeRefreshLayout.OnRefreshListener =
         SwipeRefreshLayout.OnRefreshListener {
             mView.swipe_refresh.isRefreshing = false
-            init()
+            start()
             if (isShowFavorite) {
 //                movieTvPresenter.loadFavorite(true)
                 context?.let { LoadFavoriteAsync(this).execute() }
             } else {
-                movieTvPresenter.loadMovie(MovieTvPresenterImpl.POPULAR, 1, Common.genreSelected.id, Common.regionSelected)
+                movieTvPresenter.loadMovie(
+                    filterSortBy,
+                    1,
+                    Common.genreSelected.id,
+                    Common.regionSelected
+                )
             }
         }
 
     override fun onMovieClick(movie: MovieTv, movieImageView: ImageView) {
         val intent = Intent(context, DetailActivity::class.java)
-        val uri =
-            Uri.parse("${FavoriteDb.CONTENT_URI}/" + movie.id)
+        val uri = Uri.parse("${FavoriteDb.CONTENT_URI}/" + movie.id)
         intent.data = uri
         intent.putExtra(DetailActivity.EXTRA_DETAIL, movie)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -170,6 +211,10 @@ class MovieFragment : Fragment(), MovieTvView,
     }
 
     override fun showMoviesTvHome(moviesTv: List<MovieTvHome>?) {
+
+    }
+
+    override fun updateMoviesTvPage(moviesTv: List<MovieTv>?) {
 
     }
 

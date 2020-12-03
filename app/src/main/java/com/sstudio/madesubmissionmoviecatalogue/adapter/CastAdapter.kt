@@ -38,6 +38,7 @@ class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>(){
     inner class ViewHolder(root: View) : RecyclerView.ViewHolder(root) {
         fun bind(cast: Cast) = with(itemView) {
             tv_cast_name.text = cast.name
+            tv_cast_character.text = cast.character
             Glide.with(this)
                 .load(BuildConfig.POSTER_DETAIL + cast.profilPath)
                 .skipMemoryCache(true)

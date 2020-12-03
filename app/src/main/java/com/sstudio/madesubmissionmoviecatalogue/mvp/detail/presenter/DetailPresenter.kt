@@ -13,4 +13,7 @@ interface DetailPresenter {
     fun getMovieDetail(id: Int, isMovie: Int)
     fun getMovieCredits(id: Int, isMovie: Int)
     fun getMovieVideo(id: Int, isMovie: Int)
+    fun getMovieSimilar(id: Int, isMovie: Int)
+    fun getOverviewEN(id: Int, isMovie: Int)
+    fun postTranslate(text: String)
 }

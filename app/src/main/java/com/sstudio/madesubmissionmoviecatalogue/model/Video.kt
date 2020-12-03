@@ -1,6 +1,7 @@
 package com.sstudio.madesubmissionmoviecatalogue.model
 
 data class Video(
-    val id: String,
-    val key: String
+    var id: String = "",
+    var key: String = "",
+    var name: String = ""
 )

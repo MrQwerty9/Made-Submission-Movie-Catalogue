@@ -51,7 +51,7 @@ interface MovieDbApi {
     fun findMovies(
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
-        @Query("query") query: String
+        @Query("query") query: String,
     ): Call<MoviesResponse>
 
     @GET("search/tv")
@@ -98,6 +98,14 @@ interface MovieDbApi {
         @Query("api_key") apiKey: String,
         @Query("language") language: String
     ): Call<VideoResponse>
+
+    @GET("{movie_tv}/{movie_id}/similar")
+    fun getMovieTvSimilar(
+        @Path("movie_tv") movieOrTv: String,
+        @Path("movie_id") id: Int,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String
+    ): Call<MoviesResponse>
 
     @GET("genre/movie/list")
     fun getMovieGenreList(

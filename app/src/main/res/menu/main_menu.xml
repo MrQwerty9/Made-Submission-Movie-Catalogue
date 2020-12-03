@@ -17,4 +17,10 @@
         android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|ifRoom" />
+
+    <item
+        android:id="@+id/collapsingFilter"
+        android:icon="@drawable/ic_baseline_keyboard_arrow_up_24"
+        android:title="collapse"
+        app:showAsAction="always" />
 </menu>

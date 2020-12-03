@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sstudio.madesubmissionmoviecatalogue.App
+import com.sstudio.madesubmissionmoviecatalogue.Common
 import com.sstudio.madesubmissionmoviecatalogue.NetworkReceiver
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.adapter.MovieTvAdapter
@@ -27,7 +28,6 @@ import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb.Companion.
 import com.sstudio.madesubmissionmoviecatalogue.model.Genres
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTvHome
-import com.sstudio.madesubmissionmoviecatalogue.model.MoviesResponse
 import com.sstudio.madesubmissionmoviecatalogue.mvp.FavoriteAsyncCallback
 import com.sstudio.madesubmissionmoviecatalogue.mvp.MainActivity
 import com.sstudio.madesubmissionmoviecatalogue.mvp.MovieClickAnim
@@ -51,6 +51,8 @@ class TvShowFragment : Fragment(), MovieTvView,
     private var isShowFavorite = false
     private lateinit var myObserver: DataObserver
     private lateinit var handlerThread: HandlerThread
+    private var filterSortBy = ""
+    private var filterQuery = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +76,7 @@ class TvShowFragment : Fragment(), MovieTvView,
         mView = inflater.inflate(R.layout.fragment_tvshow, container, false)
         init()
         mView.swipe_refresh.setOnRefreshListener(tvRefresh)
-        movieTvPresenter.init()
+        movieTvPresenter.setGridLayout()
         return mView
     }
 
@@ -96,7 +98,12 @@ class TvShowFragment : Fragment(), MovieTvView,
                 override fun onQueryTextChange(newText: String): Boolean {
                     if (newText.isEmpty()) {
                         progressVisible()
-                        movieTvPresenter.loadTvShow(MovieTvPresenterImpl.POPULAR)
+                        movieTvPresenter.loadTvShow(
+                            filterSortBy,
+                            1,
+                            Common.genreSelected.id,
+                            Common.regionSelected
+                        )
                     }
                     return true
                 }
@@ -119,7 +126,12 @@ class TvShowFragment : Fragment(), MovieTvView,
         viewModel = ViewModelProviders.of(this)
             .get(MovieTvPresenterImpl::class.java)
         if (viewModel.tvShow == null && !isShowFavorite) {
-            movieTvPresenter.loadTvShow(MovieTvPresenterImpl.POPULAR)
+            movieTvPresenter.loadTvShow(
+                filterSortBy,
+                1,
+                Common.genreSelected.id,
+                Common.regionSelected
+            )
         } else if (viewModel.tvShowFavorite == null && isShowFavorite) {
 //            movieTvPresenter.loadFavorite(false)
             context?.let { LoadFavoriteAsync(this).execute() }
@@ -138,7 +150,12 @@ class TvShowFragment : Fragment(), MovieTvView,
 //            movieTvPresenter.loadFavorite(false)
                 context?.let { LoadFavoriteAsync(this).execute() }
             } else {
-                movieTvPresenter.loadTvShow(MovieTvPresenterImpl.POPULAR)
+                movieTvPresenter.loadTvShow(
+                    filterSortBy,
+                    1,
+                    Common.genreSelected.id,
+                    Common.regionSelected
+                )
             }
         }
 
@@ -160,6 +177,10 @@ class TvShowFragment : Fragment(), MovieTvView,
     }
 
     override fun showMoviesTvHome(moviesTv: List<MovieTvHome>?) {
+
+    }
+
+    override fun updateMoviesTvPage(moviesTv: List<MovieTv>?) {
 
     }
 

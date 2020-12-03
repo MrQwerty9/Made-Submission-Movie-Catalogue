@@ -24,6 +24,8 @@
     <string name="content_text">Content text</string>
     <string name="subtext">Sub text</string>
     <string name="cast">Cast</string>
+    <string name="similar">Similar</string>
+    <string name="trailer">Trailer</string>
 
     <string name="msg_daily_reminder">Hello!</string>
     <string name="msg_daily_reminder_content">We miss you, come and see the new movies!</string>

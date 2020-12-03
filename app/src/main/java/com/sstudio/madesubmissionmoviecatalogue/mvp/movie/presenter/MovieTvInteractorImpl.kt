@@ -40,6 +40,26 @@ class MovieTvInteractorImpl(private val movieDbApi: MovieDbApi, context: Context
         return movieDbApi.getDiscoverMovies(apiKey, language, MovieTvPresenterImpl.POPULAR, page, dateAgo, dateTill, 0, "", genre?.toString() ?: "", region)
     }
 
+    override fun getNowPlayingMoviesTv(
+        page: Int,
+        genre: Int?,
+        region: String
+    ): Call<MoviesResponse> {
+        return movieDbApi.getDiscoverMovies(apiKey, language, MovieTvPresenterImpl.POPULAR, page, "", "", 0, "", genre?.toString() ?: "", region)
+    }
+
+    override fun getPopularMoviesTv(page: Int, genre: Int?, region: String): Call<MoviesResponse> {
+        return movieDbApi.getDiscoverMovies(apiKey, language, MovieTvPresenterImpl.POPULAR, page, "", "", 0, "", genre?.toString() ?: "", region)
+    }
+
+    override fun getTopRatedMoviesTv(page: Int, genre: Int?, region: String): Call<MoviesResponse> {
+        return movieDbApi.getDiscoverMovies(apiKey, language, MovieTvPresenterImpl.POPULAR, page, "", "", 0, "", genre?.toString() ?: "", region)
+    }
+
+    override fun getUpcomingMoviesTv(page: Int, genre: Int?, region: String): Call<MoviesResponse> {
+        return movieDbApi.getDiscoverMovies(apiKey, language, MovieTvPresenterImpl.POPULAR, page, "", "", 0, "", genre?.toString() ?: "", region)
+    }
+
     override fun getDiscoverMovies(sortBy: String, page: Int, genre: Int?, region: String): Call<MoviesResponse> {
         return movieDbApi.getDiscoverMovies(apiKey, language, MovieTvPresenterImpl.POPULAR, page, "", "", 0, "", genre?.toString() ?: "", region)
     }
@@ -72,7 +92,12 @@ class MovieTvInteractorImpl(private val movieDbApi: MovieDbApi, context: Context
 
     override fun getMovieTvVideo(id: Int, isMovie: Int, ): Call<VideoResponse> {
         val mIsMovie = if (isMovie == 1) "movie" else "tv"
-        return movieDbApi.getMovieTvVideo(mIsMovie, id, apiKey, language)
+        return movieDbApi.getMovieTvVideo(mIsMovie, id, apiKey, "en-US")
+    }
+
+    override fun getMovieTvSimilar(id: Int, isMovie: Int): Call<MoviesResponse> {
+        val mIsMovie = if (isMovie == 1) "movie" else "tv"
+        return movieDbApi.getMovieTvSimilar(mIsMovie, id, apiKey, language)
     }
 
     override fun getMovieGenreList(): Call<Genres> {
@@ -81,6 +106,11 @@ class MovieTvInteractorImpl(private val movieDbApi: MovieDbApi, context: Context
 
     override fun getTvGenreList(): Call<Genres> {
         return movieDbApi.getTvGenreList(apiKey, language)
+    }
+
+    override fun getOverViewEN(id: Int, isMovie: Int): Call<Detail> {
+        val mIsMovie = if (isMovie == 1) "movie" else "tv"
+        return movieDbApi.getMovieTvDetail(mIsMovie, id, apiKey, "en-US")
     }
 
     private fun dateWeek(week: Int): String{
