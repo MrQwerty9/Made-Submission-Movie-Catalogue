@@ -49,7 +49,14 @@ class MainActivity : AppCompatActivity(){
             isResetViewModel = true
         }
         else if (item.itemId == R.id.reminder){
-            startActivity(Intent(this, ReminderActivity::class.java))
+            val intent = Intent(this, ReminderActivity::class.java)
+            intent.putExtra(ReminderActivity.SETTING_EXTRA, ReminderActivity.SETTING_REMINDER)
+            startActivity(intent)
+        }
+        else if (item.itemId == R.id.gdrive_account){
+            val intent = Intent(this, ReminderActivity::class.java)
+            intent.putExtra(ReminderActivity.SETTING_EXTRA, ReminderActivity.SETTING_GDRIVE)
+            startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
     }

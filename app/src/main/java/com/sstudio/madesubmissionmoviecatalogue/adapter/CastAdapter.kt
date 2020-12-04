@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
 import com.sstudio.madesubmissionmoviecatalogue.R
+import com.sstudio.madesubmissionmoviecatalogue.helper.SslHandshakeIgnore
 import com.sstudio.madesubmissionmoviecatalogue.model.Cast
 import kotlinx.android.synthetic.main.item_cast.view.*
 import java.util.*
@@ -40,7 +41,7 @@ class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>(){
             tv_cast_name.text = cast.name
             tv_cast_character.text = cast.character
             Glide.with(this)
-                .load(BuildConfig.POSTER_DETAIL + cast.profilPath)
+                .load(SslHandshakeIgnore().replaceHttp(BuildConfig.POSTER_LIST) + cast.profilPath)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .fitCenter()

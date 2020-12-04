@@ -35,6 +35,7 @@
     <string name="cast">Pemeran</string>
     <string name="similar">Serupa</string>
     <string name="trailer">Cuplikan</string>
+    <string name="drive_search">Cari di Google Drive Saya</string>
     <string name="msg_no_video">Video tidak ditemukan</string>
     <string name="msg_no_description">Tidak ada deskripsi untuk bahasa ini</string>
 

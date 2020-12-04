@@ -41,7 +41,6 @@ class GenreAdapter(val isHomeFragment: Boolean, val iGenreAdapterView: IGenreAda
             this.genres = genres
             notifyDataSetChanged()
         }
-        Log.d("myTag genre", this.genres[0].name)
     }
 
     inner class ViewHolder(root: View) : RecyclerView.ViewHolder(root) {

@@ -18,9 +18,10 @@ android {
         buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
         buildConfigField "String", "TMDB_API_KEY", "\"a65ec405c3a90543b914c39e1a1faa00\""
         buildConfigField "String", "YOUTUBE_API_KEY", "\"AIzaSyCxKnCkDOdHItIf_r8IPlax2H-B3Bb1jSA\""
-        buildConfigField "String", "YOUTUBE_THUMBNAIL_URL", "\"http://img.youtube.com/vi/\""
-        buildConfigField "String", "POSTER_LIST", "\"http://image.tmdb.org/t/p/w154\""
-        buildConfigField "String", "POSTER_DETAIL", "\"http://image.tmdb.org/t/p/w342\""
+        buildConfigField "String", "YOUTUBE_THUMBNAIL_URL", "\"https://img.youtube.com/vi/\""
+        buildConfigField "String", "POSTER_LIST", "\"https://image.tmdb.org/t/p/w154\""
+        buildConfigField "String", "POSTER_DETAIL", "\"https://image.tmdb.org/t/p/w342\""
+        buildConfigField "String", "GOOGLE_DRIVE_FILE", "\"https://drive.google.com/drive/%ssearch?q=%s\""
         multiDexEnabled true
     }
     buildTypes {

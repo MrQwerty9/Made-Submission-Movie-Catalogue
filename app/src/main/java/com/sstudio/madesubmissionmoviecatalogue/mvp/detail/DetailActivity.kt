@@ -24,9 +24,11 @@ import com.sstudio.madesubmissionmoviecatalogue.adapter.GenreAdapter
 import com.sstudio.madesubmissionmoviecatalogue.adapter.SimilarAdapter
 import com.sstudio.madesubmissionmoviecatalogue.adapter.VideoAdapter
 import com.sstudio.madesubmissionmoviecatalogue.data.local.FavoriteDb
+import com.sstudio.madesubmissionmoviecatalogue.helper.SslHandshakeIgnore
 import com.sstudio.madesubmissionmoviecatalogue.model.*
 import com.sstudio.madesubmissionmoviecatalogue.mvp.FavoriteAsyncCallback
 import com.sstudio.madesubmissionmoviecatalogue.mvp.detail.presenter.DetailPresenter
+import com.sstudio.madesubmissionmoviecatalogue.preference.GDriveUrlSettingPreference
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.content_detail.*
 import kotlinx.android.synthetic.main.movie_wrapper.*
@@ -104,6 +106,20 @@ class DetailActivity : AppCompatActivity(), DetailView,
         rv_trailer.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         videoAdapter = VideoAdapter(this)
         rv_trailer.adapter = videoAdapter
+
+        iv_gdrive_file_search_play.setOnClickListener {
+            val yearRelease = movieTv.releaseDate.substring(0,4)
+            val gDriveUrl = GDriveUrlSettingPreference(this)
+            var gDriveUserUrl = ""
+            if (gDriveUrl.getPreference() != ""){
+                gDriveUserUrl = "u/${gDriveUrl.getPreference()}/"
+            }
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(String.format(BuildConfig.GOOGLE_DRIVE_FILE,gDriveUserUrl, "${movieTv.title}.${yearRelease}"))
+            )
+            startActivity(intent)
+        }
     }
 
     private fun showMovieDetail(movieTvSimilar: MovieTv?) {
@@ -127,7 +143,7 @@ class DetailActivity : AppCompatActivity(), DetailView,
         txt_rating.text = movieTv.voteAverage.toString()
         txt_votes.text = " / ${movieTv.voteCount}"
         Glide.with(this)
-            .load(BuildConfig.POSTER_DETAIL + movieTv.posterPath)
+            .load(SslHandshakeIgnore().replaceHttp(BuildConfig.POSTER_DETAIL) + movieTv.posterPath)
             .thumbnail(0.5f)
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -156,7 +172,7 @@ class DetailActivity : AppCompatActivity(), DetailView,
             }
             (rv_genre.adapter as GenreAdapter).addGenre(it.genres)
             Glide.with(this)
-                .load(BuildConfig.POSTER_DETAIL + it.backdropPath)
+                .load(SslHandshakeIgnore().replaceHttp(BuildConfig.POSTER_DETAIL) + it.backdropPath)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .fitCenter()

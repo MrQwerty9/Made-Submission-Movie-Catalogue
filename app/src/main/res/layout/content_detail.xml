@@ -95,6 +95,71 @@
             app:layout_constraintStart_toStartOf="@+id/tv_cast_label"
             app:layout_constraintTop_toBottomOf="@+id/tv_trailer_label" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/gdrive_file_search"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="233dp"
+            android:background="@color/colorPrimaryWhite"
+            android:maxWidth="1000dp"
+            android:layout_margin="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/rv_trailer"
+            app:layout_constraintStart_toStartOf="@+id/rv_trailer"
+            app:layout_constraintTop_toBottomOf="@+id/rv_trailer"
+            app:layout_constraintVertical_bias="0">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/gdrive_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_gdrive_file_search_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/drive_search"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/gdrive_file_search_play"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/gdrive_file_search_play"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_gdrive_file_search_play"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@color/colorPrimaryWhite"
+                    android:src="@drawable/ic_baseline_play_arrow_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <TextView
             android:id="@+id/tv_similar_label"
             android:layout_width="wrap_content"
@@ -103,7 +168,7 @@
             android:textAllCaps="true"
             android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="@+id/txt_overview"
-            app:layout_constraintTop_toBottomOf="@+id/rv_trailer" />
+            app:layout_constraintTop_toBottomOf="@+id/gdrive_file_search" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_similar"
@@ -111,7 +176,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             app:layout_constraintEnd_toEndOf="@+id/txt_overview"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tv_cast_label"
             app:layout_constraintTop_toBottomOf="@+id/tv_similar_label" />
     </androidx.constraintlayout.widget.ConstraintLayout>

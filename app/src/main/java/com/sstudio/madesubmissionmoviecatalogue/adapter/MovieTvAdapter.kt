@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.sstudio.madesubmissionmoviecatalogue.BuildConfig
 import com.sstudio.madesubmissionmoviecatalogue.R
+import com.sstudio.madesubmissionmoviecatalogue.helper.SslHandshakeIgnore
 import com.sstudio.madesubmissionmoviecatalogue.model.MovieTv
 import com.sstudio.madesubmissionmoviecatalogue.mvp.MovieClickAnim
 import kotlinx.android.synthetic.main.item_movie.view.*
@@ -48,7 +49,7 @@ class MovieTvAdapter(private val context: Context, private val isMovie: Boolean,
             holder.txtReleaseDate.text = movie.firstAirDate
         }
         holder.txtOverview.text = movie.overview
-        val poster = BuildConfig.POSTER_LIST + movie.posterPath
+        val poster = SslHandshakeIgnore().replaceHttp(BuildConfig.POSTER_LIST) + movie.posterPath
         Glide.with(context)
             .load(poster)
             .thumbnail(0.5f)

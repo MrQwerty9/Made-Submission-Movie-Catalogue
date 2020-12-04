@@ -9,7 +9,7 @@ import androidx.preference.SwitchPreference
 import com.sstudio.madesubmissionmoviecatalogue.R
 import com.sstudio.madesubmissionmoviecatalogue.reminder.AlarmReceiver
 
-class SettingPreference: PreferenceFragmentCompat(),
+class ReminderSettingPreference: PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val DAILY_KEY: String = "sp_daily"
@@ -20,7 +20,7 @@ class SettingPreference: PreferenceFragmentCompat(),
     private val alarmReceiver = AlarmReceiver()
 
     override fun onCreatePreferences(bundle: Bundle?, s: String?) {
-        addPreferencesFromResource(R.xml.preferences)
+        addPreferencesFromResource(R.xml.reminder_preferences)
         init()
         setSummaries()
     }
